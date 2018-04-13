@@ -13,7 +13,7 @@ public class UserTester implements UserInterface {
     }
 
     @Override
-    public boolean banUser(String email, String AdminUserName) {
+    public boolean banUser(String email, String adminUserName) {
         return true;
     }
 }
