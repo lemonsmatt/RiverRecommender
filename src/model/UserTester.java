@@ -11,4 +11,9 @@ public class UserTester implements UserInterface {
     public boolean isValidUser(String email, String password) {
         return true;
     }
+
+    @Override
+    public boolean banUser(String email) {
+        return true;
+    }
 }
