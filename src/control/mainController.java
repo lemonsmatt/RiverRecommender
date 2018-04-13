@@ -27,7 +27,6 @@ public class mainController extends Controller {
         deleteButton.setVisible(isUser);
         validateButton.setVisible(isAdmin);
         banButton.setVisible(isAdmin);
-        System.out.println(mainApp.getEmail());
         emailLabel.setText(mainApp.getEmail());
     }
 
