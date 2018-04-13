@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.*;
 import java.util.EmptyStackException;
 
 public class Main extends Application {
@@ -19,16 +20,59 @@ public class Main extends Application {
     private static boolean admin;
     private static boolean user;
     private static String email;
+    private static Connection connection;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        setupServer();
+
+        ResultSet r = null;
+        r = queryServer("SELECT * FROM [User]");
+
+        while (r.next())
+        {
+            System.out.println(r.getString(1) + " "
+                    + r.getString(2));
+        }
+
+
         admin = false;
         user = false;
         email = "New User";
         mainStage = primaryStage;
         initRootLayout(mainStage);
         showScene("main");
+
+    }
+
+    public void setupServer(){
+        String hostName = "riverrecommender.database.windows.net";
+        String dbName = "riverrecommender";
+        String user = "cascader";
+        String password = "waterfall1.";
+        String url = String.format("jdbc:sqlserver://%s:1433;database=%s;user=%s;password=%s;encrypt=true;hostNameInCertificate=*.database.windows.net;loginTimeout=30;", hostName, dbName, user, password);
+        connection = null;
+
+        try {
+            connection = DriverManager.getConnection(url);
+            String schema = connection.getSchema();
+            System.out.println("Successful connection - Schema: " + schema);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet queryServer(String query) {
+       try {
+           Statement statement = connection.createStatement();
+           ResultSet resultSet = statement.executeQuery(query);
+           return resultSet;
+       } catch (Exception e) {
+            e.printStackTrace();
+       }
+       return null;
     }
 
     public void showScene(String sceneName) {
@@ -90,5 +134,11 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+        try {
+            connection.close();
+        } catch (SQLException e)
+        {
+
+        }
     }
 }
