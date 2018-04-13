@@ -1,6 +1,6 @@
 package model;
 
-public class LoginTester implements LoginInterface {
+public class UserTester implements UserInterface {
 
     @Override
     public boolean isAdmin(String email, String password) {

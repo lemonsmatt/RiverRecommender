@@ -11,13 +11,21 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.EmptyStackException;
 
 public class Main extends Application {
     private static Stage mainStage;
     private static  Pane rootLayout;
+    private static boolean admin;
+    private static boolean user;
+    private static String email;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        admin = false;
+        user = false;
+        email = "New User";
         mainStage = primaryStage;
         initRootLayout(mainStage);
         showScene("main");
@@ -41,7 +49,7 @@ public class Main extends Application {
     private void initRootLayout(Stage mainStage) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("../view/login.fxml"));
+            loader.setLocation(Main.class.getResource("../view/main.fxml"));
             rootLayout = loader.load();
 
             Controller mainController = loader.getController();
@@ -56,6 +64,29 @@ public class Main extends Application {
         }
     }
 
+    public static boolean isAdmin() {
+        return admin;
+    }
+
+    public static boolean isUser() {
+        return user;
+    }
+
+    public static String getEmail() {
+        return email;
+    }
+
+    public static void setAdmin(boolean admin) {
+        Main.admin = admin;
+    }
+
+    public static void setEmail(String email) {
+        Main.email = email;
+    }
+
+    public static void setUser(boolean user) {
+        Main.user = user;
+    }
 
     public static void main(String[] args) {
         launch(args);

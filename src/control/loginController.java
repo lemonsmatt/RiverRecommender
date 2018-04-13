@@ -2,39 +2,34 @@ package control;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import model.LoginInterface;
-import model.LoginTester;
+import model.UserInterface;
+import model.UserTester;
 
 import java.io.IOException;
 
 public class loginController extends Controller{
     @FXML private TextField fieldEmail;
     @FXML private TextField fieldPassword;
-    private LoginInterface loginInterface;
+    private UserInterface userInterface;
 
 
     @FXML
     public void initialize() {
-        loginInterface = new LoginTester();
+        userInterface = new UserTester();
     }
 
     @FXML protected void handleLoginButtonAction(ActionEvent event) throws IOException {
         String email = fieldEmail.getText();
         String password = fieldPassword.getText();
-        if (loginInterface.isValidUser(email, password))
+
+        if (userInterface.isValidUser(email, password))
         {
-            if (loginInterface.isAdmin(email, password)) {
+            mainApp.setUser(userInterface.isValidUser(email, password));
+            mainApp.setAdmin(userInterface.isAdmin(email, password));
+            mainApp.setEmail(email);
+            mainApp.showScene("main");
 
-            } else {
-                mainApp.showScene("main");
-
-            }
         }
 
     }
