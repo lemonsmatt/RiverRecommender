@@ -39,10 +39,10 @@ public class UserTester implements UserInterface {
     }
 
     @Override
-    public boolean banUser(String email, String AdminUserName) {
+    public boolean banUser(String email, String adminUserName) {
 		//Do we need to know admin who banned the user? (BannedBy) 
 		
-		String query = "UPDATE dbo.[User] SET BannedBy = " + AdminUserName + " WHERE Email = " + email = ";";  
+		String query = "UPDATE dbo.[User] SET BannedBy = " + adminUserName + " WHERE Email = " + email = ";";  
 		statement.executeUpdate(query);
 		
 		boolean ret = false;
