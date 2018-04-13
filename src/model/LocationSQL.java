@@ -1,33 +1,36 @@
 package model;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LocationSQL implements LocationInterface {
+	private Database db;
+
+	public LocationSQL()
+	{
+		db = new Database();
+	}
 
     @Override
     public List<Location> getValidatedLocations() {
-	String query = "SELECT Name, AvgRating From dbo.Location WHERE ValidatedBy != NULL;";
-	ResultSet rs = stmt.executeQuery(query);
 
-	List<Location> list = new ArrayList<>();
-	Location location;
-	while(rs.next()){
-		location = new Location();
+    	String query = "SELECT Name, AvgRating From dbo.Location WHERE ValidatedBy != NULL;";
+		ResultSet rs = db.queryServer(query);
 
-		String name = rs.getString("Name");
-		String latitude = rs.getString("latitude");
-		String longitude = rs.getString("longitude");
-		String radius = rs.getString("radius");
 
-		location.name = name;
-		location.latitude = latitude;
-		location.longitude = longitude;
-		location.radius = radius;
+		List<Location> list = new ArrayList<>();
+		while(rs.next()){
 
-		list.add(location)
-	}
+			String name = rs.getString("Name");
+			String latitude = rs.getString("latitude");
+			String longitude = rs.getString("longitude");
+			String radius = rs.getString("radius");
+			Location location = new Location(name, Float.parseFloat(latitude), Float.parseFloat(longitude), Float.parseFloat(radius));
 
-	rs.close();
+			list.add(location);
+		}
+
         return list;
     }
 
