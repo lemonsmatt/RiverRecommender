@@ -6,5 +6,5 @@ public interface UserInterface {
 
     public boolean isAdmin(String email, String password);
 
-    public boolean banUser(String email, String AdminUserName);
+    public boolean banUser(String email, String adminUserName);
 }
