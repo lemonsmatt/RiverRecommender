@@ -1,4 +1,4 @@
 package control;
 
-public class deleteLocationController extends Controller {
+public class DeleteLocationController extends Controller {
 }
