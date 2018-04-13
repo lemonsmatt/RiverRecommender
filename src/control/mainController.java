@@ -35,19 +35,19 @@ public class mainController extends Controller {
     }
 
     @FXML protected void handleCreateButtonAction(ActionEvent event) throws IOException {
-        mainApp.showScene("create");
+        mainApp.showScene("createLocation");
     }
 
     @FXML protected void handleDeleteButtonAction(ActionEvent event) throws IOException {
-        mainApp.showScene("delete");
+        mainApp.showScene("deleteLocation");
     }
 
     @FXML protected void handleValidateButtonAction(ActionEvent event) throws IOException {
-        mainApp.showScene("validate");
+        mainApp.showScene("validateLocation");
     }
 
     @FXML protected void handleBanButtonAction(ActionEvent event) throws IOException {
-        mainApp.showScene("ban");
+        mainApp.showScene("banUser");
     }
     @FXML protected  void handleLogoutButtonAction(ActionEvent event) throws IOException {
         mainApp.setAdmin(false);
