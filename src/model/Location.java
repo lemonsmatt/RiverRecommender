@@ -24,5 +24,30 @@ public class Location {
         this.radius = radius;
     }
 
+    public int getID(Location location) {
+        return location.id;
+    }
+
+    public String getName(Location location) {
+        return location.name;
+    }
+
+    public float getLatitude(Location location) {
+        return location.latitude;
+    }
+
+    public float getLongitude(Location location) {
+        return location.longitude;
+    }
+
+    public float getRating(Location location) {
+        return location.rating;
+    }
+
+    public float getRadius(Location location) {
+        return location.radius;
+
+    }
+
 
 }

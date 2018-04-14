@@ -1,60 +1,64 @@
 package model;
 
-public class UserTester implements UserInterface {
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-    @Override
-    public boolean isAdmin(String email, String password) {
-		String query = "SELECT IsAdmin FROM dbo.[User] WHERE Email = " + email + " Password = " + password + ";";  
-		statement.executeUpdate(query);
-		
+public class UserSQL implements UserInterface {
+	private Database db;
+
+	public UserSQL()
+	{
+		db = new Database();
+	}
+
+	@Override
+	public boolean isAdmin(String email, String password) {
+		String query = "SELECT IsAdmin FROM dbo.[User] WHERE Email = " + email + " Password = " + password + ";";
+
 		boolean ret = false;
 		try {
-			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			ResultSet rs = db.queryServer(query);
 			while (rs.next()) {
-				ret = rs.getString("IsAdmin");
+				ret = rs.getBoolean("IsAdmin");
 			}
-			
-			return ret == "True" ? true : false;
-		}
-        return false;
-    }
 
-    @Override
-    public boolean isValidUser(String email, String password) {
-		String query = "SELECT BannedBy FROM dbo.[User] WHERE Email = " + email + " Password = " + password + ";";  
-		statement.executeUpdate(query);
-		
-		boolean ret = false;
-		try {
-			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				ret = rs.getString("BannedBy");
-			}
-			
-			return ret == null ? true : false;
+			return ret;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public boolean banUser(String email, String adminUserName) {
-		//Do we need to know admin who banned the user? (BannedBy) 
-		
-		String query = "UPDATE dbo.[User] SET BannedBy = " + adminUserName + " WHERE Email = " + email = ";";  
-		statement.executeUpdate(query);
-		
-		boolean ret = false;
+	@Override
+	public boolean isValidUser(String email, String password) {
+		String query = "SELECT BannedBy FROM [User] WHERE Email = " + email + " Password = " + password + ";";
+
+		String  ret = null;
 		try {
-			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			ResultSet rs = db.queryServer(query);
 			while (rs.next()) {
 				ret = rs.getString("BannedBy");
 			}
-			
-			return ret != null ? true : false;
+			return ret != null;
+		} catch (SQLException e) {
+			return false;
 		}
-        return false;
-    }
+	}
+
+	@Override
+	public boolean banUser(String email, String adminUserName) {
+		//Do we need to know admin who banned the user? (BannedBy)
+
+		String query = "UPDATE [User] SET BannedBy = " + adminUserName + " WHERE Email = " + email + ";";
+		String ret = null;
+		try {
+			ResultSet rs = db.queryServer(query);
+			while (rs.next()) {
+				ret = rs.getString("BannedBy");
+			}
+			return ret != null;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
 }

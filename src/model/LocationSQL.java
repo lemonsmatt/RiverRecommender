@@ -1,82 +1,72 @@
 package model;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LocationSQL implements LocationInterface {
 	private Database db;
 
-	public LocationSQL()
-	{
-		db = new Database();
+	private LocationSQL(Database db) {
+		this.db = db;
 	}
 
-    @Override
-    public List<Location> getValidatedLocations() {
+	@Override
+	public List<Location> getValidatedLocations() {
 
-    	String query = "SELECT Name, AvgRating From dbo.Location WHERE ValidatedBy != NULL;";
-		ResultSet rs = db.queryServer(query);
-
+		String query = "SELECT Name, AvgRating From dbo.Location WHERE ValidatedBy != NULL;";
 
 		List<Location> list = new ArrayList<>();
-		while(rs.next()){
-
-			String name = rs.getString("Name");
-			String latitude = rs.getString("latitude");
-			String longitude = rs.getString("longitude");
-			String radius = rs.getString("radius");
-			Location location = new Location(name, Float.parseFloat(latitude), Float.parseFloat(longitude), Float.parseFloat(radius));
-
-			list.add(location);
+		try {
+			ResultSet rs = db.queryServer(query);
+			while (rs.next()) {
+				String name = rs.getString("Name");
+				String latitude = rs.getString("latitude");
+				String longitude = rs.getString("longitude");
+				String radius = rs.getString("radius");
+				Location location = new Location(name, Float.parseFloat(latitude), Float.parseFloat(longitude), Float.parseFloat(radius));
+				list.add(location);
+			}
+		} catch (SQLException e) {
+			return null;
 		}
-
-        return list;
-    }
-
-    @Override
-    public List<Location> getUnvalidatedLocations() {
-	String query = "SELECT Name, AvgRating From dbo.Location WHERE ValidatedBy == NULL;";
-	ResultSet rs = stmt.executeQuery(query);
-
-	List<Location> list = new ArrayList<>();
-	Location location;
-	while(rs.next()){
-		location = new Location();
-
-		String name = rs.getString("Name");
-		String latitude = rs.getString("latitude");
-		String longitude = rs.getString("longitude");
-		String radius = rs.getString("radius");
-
-		location.name = name;
-		location.latitude = latitude;
-		location.longitude = longitude;
-		location.radius = radius;
-
-		list.add(location);
+		return list;
 	}
 
-	rs.close();
-        return list;
-    }
+	@Override
+	public List<Location> getUnvalidatedLocations() {
+		String query = "SELECT Name, AvgRating From dbo.Location WHERE ValidatedBy == NULL;";
+		List<Location> list = new ArrayList<>();
+		try {
+			ResultSet rs = db.queryServer(query);
+			while (rs.next()) {
+				String name = rs.getString("Name");
+				String latitude = rs.getString("latitude");
+				String longitude = rs.getString("longitude");
+				String radius = rs.getString("radius");
 
-    @Override		
-    public boolean addLocation(Location loc) {
-		
-	String LID = loc.id;
-	String name = loc.name;
-	String radius = loc.radius;		
-	String query = "INSERT INTO dbo.Location (LID, Name, RiverRelevantRadius) VALUES (" + loc.id + ", " + loc.name ", " + loc.radius + ");";
-	statement.executeUpdate(query);
-	//Try and fail Not completed
-        return false;
-    }
+				Location location = new Location(name, Float.parseFloat(latitude), Float.parseFloat(longitude), Float.parseFloat(radius));
+				list.add(location);
+			}
+		} catch (SQLException e) {
+			return null;
+		}
+		return list;
+	}
 
-    @Override
-    public boolean removeLocation(Location loc) {
-	String query = "DELETE * FROM dbo.Location WHERE id = loc.id;";
-	statement.executeUpdate(query);
-        return false;
-    }
+	@Override
+	public boolean addLocation(Location loc) {
+		String query = "INSERT INTO dbo.Location (LID, Name, RiverRelevantRadius) VALUES (" + loc.getID(loc) + ", " + loc.getName(loc) + ", " + loc.getRadius(loc) + ");";
+		ResultSet rs = db.queryServer(query);
+		//Try and fail Not completed
+		return rs != null;
+	}
+
+	@Override
+	public boolean removeLocation(Location loc) {
+		String query = "DELETE * FROM dbo.Location WHERE id = " + loc.getID(loc)+ ";";
+		ResultSet rs = db.queryServer(query);
+		return rs != null;
+	}
 }
