@@ -9,7 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.*;
+import model.Database;
 
 import javax.xml.crypto.Data;
 import java.io.IOException;
@@ -17,15 +17,17 @@ import java.sql.*;
 import java.util.EmptyStackException;
 
 public class Main extends Application {
+
     private static Stage mainStage;
     private static  Pane rootLayout;
     private static boolean admin;
     private static boolean user;
     private static String email;
+    private static Database database;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Database database = new Database();
+        database = new Database();
         admin = false;
         user = false;
         email = "New User";
@@ -99,4 +101,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+    public static Database getDatabase() { return Main.database; };
 }
