@@ -25,7 +25,8 @@ public class LocationSQL implements LocationInterface {
 				String latitude = rs.getString("latitude");
 				String longitude = rs.getString("longitude");
 				String radius = rs.getString("radius");
-				Location location = new Location(name, Float.parseFloat(latitude), Float.parseFloat(longitude), Float.parseFloat(radius));
+				String madeBy = rs.getString("madeBy");
+				Location location = new Location(name, Float.parseFloat(latitude), Float.parseFloat(longitude), Float.parseFloat(radius), madeBy);
 				list.add(location);
 			}
 		} catch (SQLException e) {
@@ -45,8 +46,8 @@ public class LocationSQL implements LocationInterface {
 				String latitude = rs.getString("latitude");
 				String longitude = rs.getString("longitude");
 				String radius = rs.getString("radius");
-
-				Location location = new Location(name, Float.parseFloat(latitude), Float.parseFloat(longitude), Float.parseFloat(radius));
+				String madeBy = rs.getString("madeBy");
+				Location location = new Location(name, Float.parseFloat(latitude), Float.parseFloat(longitude), Float.parseFloat(radius), madeBy);
 				list.add(location);
 			}
 		} catch (SQLException e) {
@@ -57,7 +58,7 @@ public class LocationSQL implements LocationInterface {
 
 	@Override
 	public boolean addLocation(Location loc) {
-		String query = "INSERT INTO dbo.Location (LID, Name, RiverRelevantRadius) VALUES (" + loc.getID(loc) + ", " + loc.getName(loc) + ", " + loc.getRadius(loc) + ");";
+		String query = "INSERT INTO dbo.Location (LID, Name, RiverRelevantRadius) VALUES (" + loc.getID() + ", " + loc.getName() + ", " + loc.getRadius() + ");";
 		ResultSet rs = db.queryServer(query);
 		//Try and fail Not completed
 		return rs != null;
@@ -65,7 +66,7 @@ public class LocationSQL implements LocationInterface {
 
 	@Override
 	public boolean removeLocation(Location loc) {
-		String query = "DELETE * FROM dbo.Location WHERE id = " + loc.getID(loc)+ ";";
+		String query = "DELETE * FROM dbo.Location WHERE id = " + loc.getID()+ ";";
 		ResultSet rs = db.queryServer(query);
 		return rs != null;
 	}
