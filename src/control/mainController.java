@@ -1,10 +1,18 @@
 package control;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import model.Location;
+import model.LocationInterface;
+import model.LocationTester;
 
 import java.io.IOException;
 
@@ -18,16 +26,36 @@ public class mainController extends Controller {
     @FXML private Button validateButton;
     @FXML private Button banButton;
 
+    @FXML public TableColumn<Location, Integer> idCol;
+    @FXML public TableColumn<Location, String> nameCol;
+    @FXML public TableColumn<Location, Float> latitudeCol;
+    @FXML public TableColumn<Location, Float> longitudeCol;
+    @FXML public TableColumn<Location, Float> ratingCol;
+    @FXML public TableView<Location> table;
+
     @FXML
     public void initialize() {
         boolean isUser = mainApp.isUser();
         boolean isAdmin = mainApp.isAdmin();
         logoutButton.setDisable(!isUser);
-        createButton.setVisible(isUser);
-        deleteButton.setVisible(isUser);
-        validateButton.setVisible(isAdmin);
-        banButton.setVisible(isAdmin);
+        loginButton.setDisable(isUser);
+        createButton.setDisable(!isUser);
+        deleteButton.setDisable(!isUser);
+        validateButton.setDisable(!isAdmin);
+        banButton.setDisable(!isAdmin);
         emailLabel.setText(mainApp.getEmail());
+
+        idCol.setCellValueFactory( new PropertyValueFactory<>( "id" ));
+        nameCol.setCellValueFactory( new PropertyValueFactory<>( "name" ));
+        latitudeCol.setCellValueFactory( new PropertyValueFactory<>( "latitude" ));
+        longitudeCol.setCellValueFactory( new PropertyValueFactory<>( "longitude" ));
+        ratingCol.setCellValueFactory( new PropertyValueFactory<>( "rating" ));
+
+        LocationInterface locationInterface = new LocationTester();
+        final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocations());
+
+        table.setItems(items);
+
     }
 
     @FXML protected void handleLoginButtonAction(ActionEvent event) throws IOException {
