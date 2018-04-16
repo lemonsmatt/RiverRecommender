@@ -9,7 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Database;
+import model.*;
 
 import javax.xml.crypto.Data;
 import java.io.IOException;
@@ -30,6 +30,8 @@ public class Main extends Application {
         user = false;
         email = "New User";
         mainStage = primaryStage;
+        LocationInterface locationInterface = new LocationTester();
+        UserInterface userInterface = new UserTester();
         initRootLayout(mainStage);
         showScene("main");
 
