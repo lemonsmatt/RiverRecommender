@@ -1,4 +1,72 @@
 package control;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
+import model.Location;
+import model.LocationInterface;
+import model.LocationTester;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class DeleteLocationController extends Controller {
+
+    @FXML public TableColumn<Location, Integer> idCol;
+    @FXML public TableColumn<Location, String> nameCol;
+    @FXML public TableColumn<Location, Float> latitudeCol;
+    @FXML public TableColumn<Location, Float> longitudeCol;
+    @FXML public TableColumn<Location, Boolean> deleteCol;
+    @FXML public TableView<Location> table;
+
+    @FXML
+    public void initialize() {
+        deleteCol.setCellValueFactory( new PropertyValueFactory<>( "delete" ));
+        deleteCol.setCellFactory( tc -> new CheckBoxTableCell<>());
+
+        idCol.setCellValueFactory( new PropertyValueFactory<>( "id" ));
+        nameCol.setCellValueFactory( new PropertyValueFactory<>( "name" ));
+        latitudeCol.setCellValueFactory( new PropertyValueFactory<>( "latitude" ));
+        longitudeCol.setCellValueFactory( new PropertyValueFactory<>( "longitude" ));
+
+
+
+        LocationInterface locationInterface = new LocationTester();
+        final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocations());
+
+        table.setItems(items);
+        table.setEditable(true);
+
+    }
+
+    @FXML protected void handleCancelButtonAction(ActionEvent event) throws IOException {
+        mainApp.showScene("main");
+    }
+
+    @FXML protected void handleSubmitButtonAction(ActionEvent event) {
+        LocationInterface locationInterface = new LocationTester();
+
+
+        List<Location> del = new ArrayList<Location>();
+        for (Location loc: table.getItems()) {
+            if (loc.isDelete()) {
+                del.add(loc);
+            }
+        }
+        table.getItems().remove(del);
+        for (Location loc: del) {
+            locationInterface.removeLocation(loc);
+        }
+
+        mainApp.showScene("main");
+    }
 }
