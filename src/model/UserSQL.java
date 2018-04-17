@@ -2,6 +2,7 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserSQL implements UserInterface {
 	private Database db;
@@ -46,10 +47,10 @@ public class UserSQL implements UserInterface {
 	}
 
 	@Override
-	public boolean banUser(String email, String adminUserName) {
+	public boolean banUser(User user, String adminUserName) {
 		//Do we need to know admin who banned the user? (BannedBy)
 
-		String query = "UPDATE [User] SET BannedBy = " + adminUserName + " WHERE Email = " + email + ";";
+		String query = "UPDATE [User] SET BannedBy = " + adminUserName + " WHERE Email = " + user.getEmail() + ";";
 		String ret = null;
 		try {
 			ResultSet rs = db.queryServer(query);
@@ -60,5 +61,25 @@ public class UserSQL implements UserInterface {
 		} catch (SQLException e) {
 			return false;
 		}
+	}
+
+	@Override
+	public List<User> getValidUsers() {
+		return null;
+	}
+
+	@Override
+	public List<User> getBannableUsers() {
+		return null;
+	}
+
+	@Override
+	public boolean addUser(User user) {
+		return false;
+	}
+
+	@Override
+	public User getUser(String email, String password) {
+		return null;
 	}
 }
