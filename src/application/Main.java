@@ -19,16 +19,12 @@ import java.util.EmptyStackException;
 public class Main extends Application {
     private static Stage mainStage;
     private static  Pane rootLayout;
-    private static boolean admin;
-    private static boolean user;
-    private static String email;
+    private static User user;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Database database = new Database();
-        admin = false;
-        user = false;
-        email = "New User";
+        user = new User("New User", "", "", false, true, "");
         mainStage = primaryStage;
         LocationInterface locationInterface = new LocationTester();
         UserInterface userInterface = new UserTester();
@@ -72,27 +68,11 @@ public class Main extends Application {
         }
     }
 
-    public static boolean isAdmin() {
-        return admin;
-    }
-
-    public static boolean isUser() {
+    public static User getUser() {
         return user;
     }
 
-    public static String getEmail() {
-        return email;
-    }
-
-    public static void setAdmin(boolean admin) {
-        Main.admin = admin;
-    }
-
-    public static void setEmail(String email) {
-        Main.email = email;
-    }
-
-    public static void setUser(boolean user) {
+    public static void setUser(User user) {
         Main.user = user;
     }
 
