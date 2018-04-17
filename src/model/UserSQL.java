@@ -4,12 +4,33 @@ import application.Main;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import static model.UserTester.userList;
 
 public class UserSQL implements UserInterface {
 	private Database db;
+	static List<User> userList = new ArrayList<User>();
+
 	public UserSQL() {
 		db = Main.getDatabase();
+        String query = "SELECT Email, UserName, password, IsAdmin, BannedBy FROM dbo.[User];";
+		String ret1, ret2, ret3, ret5;
+		boolean ret4;
+		try {
+			ResultSet rs = db.queryServer(query);
+			while (rs.next()) {
+				ret1 = rs.getString("Email");
+				ret2 = rs.getString("UserName");
+				ret3 = rs.getString("password");
+				ret4 = rs.getBoolean("IsAdmin");
+				ret5 = rs.getString("BannedBy");
+				userList.add(new User(ret1, ret2,ret3, ret4, (ret5 != null), ret5));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -63,12 +84,24 @@ public class UserSQL implements UserInterface {
 
 	@Override
 	public List<User> getValidUsers() {
-		return null;
+		List<User> out = new ArrayList<User>();
+		for (User user: userList) {
+			if (!user.getBan()) {
+				out.add(user);
+			}
+		}
+		return  out;
 	}
 
 	@Override
 	public List<User> getBannableUsers() {
-		return null;
+		List<User> out = new ArrayList<User>();
+		for (User user: userList) {
+			if (!user.getBan() && !user.isAdmin()) {
+				out.add(user);
+			}
+		}
+		return  out;
 	}
 
 	@Override
@@ -94,6 +127,11 @@ public class UserSQL implements UserInterface {
 
 	@Override
 	public User getUser(String email, String password) {
-		return null;
+		for (User user: userList) {
+			if (user.getEmail().equals(email)) {
+				return user;
+			}
+		}
+		return new User();
 	}
 }
