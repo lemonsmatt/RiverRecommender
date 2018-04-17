@@ -17,11 +17,11 @@
             <TableColumn fx:id="latitudeCol" prefWidth="85.0" text="Latitude" />
             <TableColumn fx:id="longitudeCol" prefWidth="89.0" text="Longitude" />
             <TableColumn fx:id="ratingCol" prefWidth="89.0" text="Rating" />
-            <TableColumn prefWidth="75.0" text="Quality" />
-            <TableColumn prefWidth="75.0" text="Weather" />
-            <TableColumn prefWidth="75.0" text="Rain" />
-            <TableColumn prefWidth="84.0" text="Flow Delta" />
-            <TableColumn prefWidth="103.0" text="Height delta" />
+            <TableColumn fx:id="qualityCol" prefWidth="75.0" text="Quality" />
+            <TableColumn fx:id="weatherCol" prefWidth="75.0" text="Weather" />
+            <TableColumn fx:id="rainCol" prefWidth="75.0" text="Rain" />
+            <TableColumn fx:id="flowCol" prefWidth="84.0" text="Flow Delta" />
+            <TableColumn fx:id="heightCol" prefWidth="103.0" text="Height delta" />
         </columns>
       </TableView>
    </center>

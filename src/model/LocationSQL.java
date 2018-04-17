@@ -101,4 +101,19 @@ public class LocationSQL implements LocationInterface {
 		}
 		return false;
 	}
+
+	@Override
+	public List<Location> getValidatedLocationsFull() {
+		return null;
+	}
+
+	@Override
+	public List<Gauge> getGauges(Location loc) {
+		return null;
+	}
+
+	@Override
+	public List<WeatherStation> getWeatherStations(Location loc) {
+		return null;
+	}
 }

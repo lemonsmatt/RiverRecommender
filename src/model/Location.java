@@ -12,7 +12,11 @@ public class Location {
     private BooleanProperty validated = new SimpleBooleanProperty();
     private BooleanProperty delete = new SimpleBooleanProperty();
     private StringProperty madeBy = new SimpleStringProperty();
-
+    private FloatProperty quality = new SimpleFloatProperty();
+    private StringProperty weather = new SimpleStringProperty();
+    private FloatProperty rain = new SimpleFloatProperty();
+    private FloatProperty flowDelta = new SimpleFloatProperty();
+    private FloatProperty heightDelta = new SimpleFloatProperty();
 
     public Location(String name, float  latitude, float longitude, float radius, String madeBy)
     {
@@ -99,5 +103,79 @@ public class Location {
 
     public void setValidated(boolean validated) {
         this.validated.set(validated);
+    }
+
+    public float getQuality() {
+        return quality.get();
+    }
+
+    public FloatProperty qualityProperty() {
+        return quality;
+    }
+
+    public void setQuality(float quality) {
+        this.quality.set(quality);
+    }
+
+    public String getWeather() {
+        return weather.get();
+    }
+
+    public StringProperty weatherProperty() {
+        return weather;
+    }
+
+    public void setWeather(String weather) {
+        this.weather.set(weather);
+    }
+
+    public float getRain() {
+        return rain.get();
+    }
+
+    public FloatProperty rainProperty() {
+        return rain;
+    }
+
+    public void setRain(float rain) {
+        this.rain.set(rain);
+    }
+
+    public float getFlowDelta() {
+        return flowDelta.get();
+    }
+
+    public FloatProperty flowDeltaProperty() {
+        return flowDelta;
+    }
+
+    public void setFlowDelta(float flowDelta) {
+        this.flowDelta.set(flowDelta);
+    }
+
+    public float getHeightDelta() {
+        return heightDelta.get();
+    }
+
+    public FloatProperty heightDeltaProperty() {
+        return heightDelta;
+    }
+
+    public void setHeightDelta(float heightDelta) {
+        this.heightDelta.set(heightDelta);
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "name=" + name +
+                ", id=" + id +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", rating=" + rating +
+                ", radius=" + radius +
+                ", validated=" + validated +
+                ", madeBy=" + madeBy +
+                '}';
     }
 }

@@ -1,5 +1,6 @@
 package control;
 
+import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,6 +33,11 @@ public class mainController extends Controller {
     @FXML public TableColumn<Location, Float> latitudeCol;
     @FXML public TableColumn<Location, Float> longitudeCol;
     @FXML public TableColumn<Location, Float> ratingCol;
+    @FXML public TableColumn<Location, Float> qualityCol;
+    @FXML public TableColumn<Location, String> weatherCol;
+    @FXML public TableColumn<Location, Float> rainCol;
+    @FXML public TableColumn<Location, Float> flowCol;
+    @FXML public TableColumn<Location, Float> heightCol;
     @FXML public TableView<Location> table;
 
     @FXML
@@ -52,10 +58,22 @@ public class mainController extends Controller {
         longitudeCol.setCellValueFactory( new PropertyValueFactory<>( "longitude" ));
         ratingCol.setCellValueFactory( new PropertyValueFactory<>( "rating" ));
 
+        qualityCol.setCellValueFactory( new PropertyValueFactory<>( "quality" ));
+        weatherCol.setCellValueFactory( new PropertyValueFactory<>( "weather" ));
+        rainCol.setCellValueFactory( new PropertyValueFactory<>( "rain" ));
+        flowCol.setCellValueFactory( new PropertyValueFactory<>( "flowDelta" ));
+        heightCol.setCellValueFactory( new PropertyValueFactory<>( "heightDelta" ));
+
+
         LocationInterface locationInterface = new LocationTester();
         final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocations());
 
         table.setItems(items);
+
+        table.setOnMouseClicked( event -> {
+            if( event.getClickCount() == 2 ) {
+                mainApp.showScene("location", table.getSelectionModel().getSelectedItem());
+            }});
 
     }
 

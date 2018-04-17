@@ -50,4 +50,19 @@ public class LocationTester implements LocationInterface {
     public boolean removeLocation(Location loc) {
         return locList.remove(loc);
     }
+
+    @Override
+    public List<Location> getValidatedLocationsFull() {
+        return getValidatedLocations();
+    }
+
+    @Override
+    public List<Gauge> getGauges(Location loc) {
+        return null;
+    }
+
+    @Override
+    public List<WeatherStation> getWeatherStations(Location loc) {
+        return null;
+    }
 }
