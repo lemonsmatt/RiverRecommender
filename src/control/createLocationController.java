@@ -63,7 +63,7 @@ public class createLocationController extends  Controller {
         {
             return;
         }
-        Location loc = new Location(fieldName.getText(), latitude, longitude, radius, mainApp.getEmail());
+        Location loc = new Location(fieldName.getText(), latitude, longitude, radius, mainApp.getUser().getEmail());
         if (locationInterface.addLocation(loc))
         {
             mainApp.showScene("main");

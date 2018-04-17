@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import model.Location;
 import model.LocationInterface;
 import model.LocationTester;
+import model.User;
 
 import java.io.IOException;
 
@@ -35,15 +36,15 @@ public class mainController extends Controller {
 
     @FXML
     public void initialize() {
-        boolean isUser = mainApp.isUser();
-        boolean isAdmin = mainApp.isAdmin();
+        boolean isUser = !mainApp.getUser().getBan();
+        boolean isAdmin = mainApp.getUser().isAdmin();
         logoutButton.setDisable(!isUser);
         loginButton.setDisable(isUser);
         createButton.setDisable(!isUser);
         deleteButton.setDisable(!isUser);
         validateButton.setDisable(!isAdmin);
         banButton.setDisable(!isAdmin);
-        emailLabel.setText(mainApp.getEmail());
+        emailLabel.setText(mainApp.getUser().getEmail());
 
         idCol.setCellValueFactory( new PropertyValueFactory<>( "id" ));
         nameCol.setCellValueFactory( new PropertyValueFactory<>( "name" ));
@@ -78,9 +79,7 @@ public class mainController extends Controller {
         mainApp.showScene("banUser");
     }
     @FXML protected  void handleLogoutButtonAction(ActionEvent event) throws IOException {
-        mainApp.setAdmin(false);
-        mainApp.setUser(false);
-        mainApp.setEmail("New User");
+        mainApp.setUser(new User());
         mainApp.showScene("main");
     }
 }
