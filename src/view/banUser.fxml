@@ -10,13 +10,8 @@
    <bottom>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <buttons>
-<<<<<<< HEAD
             <Button fx:id="submitButton" mnemonicParsing="false" text="Submit" onAction="#handleSubmitButtonAction" />
           <Button fx:id="returnButton" mnemonicParsing="false" text="cancel" onAction="#handleCancelButtonAction" />
-=======
-            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleReturnButtonAction" text="Submit" />
-          <Button fx:id="returnButton" mnemonicParsing="false" text="cancel" />
->>>>>>> ef28bdc8794f549989fdc27763d0524cbdfdbf98
         </buttons>
       </ButtonBar>
    </bottom>
