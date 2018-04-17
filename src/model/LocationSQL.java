@@ -9,10 +9,37 @@ import java.util.List;
 
 public class LocationSQL implements LocationInterface {
 	private Database db;
+	public static List<Location> locList = new ArrayList<Location>();
 
 	public LocationSQL() {
 		this.db = Main.getDatabase();
+		String query = "SELECT Name, LID, Lat, Long, Avgrating, RiverRelevantRadius, CreatedBy, ValidatedBy FROM dbo.Location;";
+		if (locList.isEmpty())
+		{
+
+			String name, madeBy;
+			boolean validatedBy;
+			Integer LID;
+			float latitude, longitude, avgRating, radius;
+			try {
+				ResultSet rs = db.queryServer(query);
+				while (rs.next()) {
+					name = rs.getString("Name");
+					LID = rs.getInt("LID");
+					latitude = rs.getFloat("Lat");
+					longitude = rs.getFloat("Long");
+					avgRating = rs.getFloat("Avgrating");
+					radius = rs.getFloat("RiverRelevantRadius");
+					madeBy = rs.getString("CreatedBy");
+					validatedBy = rs.getBoolean("ValidatedBy");
+					locList.add(new Location(name, LID, latitude, longitude, avgRating, radius, madeBy, validatedBy));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
+
 
 	@Override
 	public List<Location> getValidatedLocations() {
@@ -24,16 +51,12 @@ public class LocationSQL implements LocationInterface {
 				String name = rs.getString("Name");
 				Float latitude = rs.getFloat("Lat");
 				Float longitude = rs.getFloat("Long");
-				Float RiverRelevantRadius = rs.getFloat("RiverRelevantRadius");
-				Float WeatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
 				String email = rs.getString("Email");
-				float radius = 0.f;
-				if (RiverRelevantRadius == -1) {
-					radius = WeatherRelevantRadius;
-				} else {
-					radius = RiverRelevantRadius;
-				}
-				Location location = new Location(name, latitude, longitude, radius, email);
+				Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
+				Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
+				Location location = new Location(name, latitude, longitude, riverRelevantRadius, email);
+				//temp
+                //weatherRelevantRadius, email);
 				list.add(location);
 			}
 		} catch (SQLException e) {
@@ -52,16 +75,12 @@ public class LocationSQL implements LocationInterface {
 				String name = rs.getString("Name");
 				Float latitude = rs.getFloat("Lat");
 				Float longitude = rs.getFloat("Long");
-				Float RiverRelevantRadius = rs.getFloat("RiverRelevantRadius");
-				Float WeatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
 				String email = rs.getString("Email");
-				float radius = 0;
-				if (RiverRelevantRadius == -1) {
-					radius = WeatherRelevantRadius;
-				} else {
-					radius = RiverRelevantRadius;
-				}
-				Location location = new Location(name, latitude, longitude, radius, email);
+				Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
+				Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
+				Location location = new Location(name, latitude, longitude, riverRelevantRadius, email);
+				//temp
+                //weatherRelevantRadius, email);
 				list.add(location);
 			}
 		} catch (SQLException e) {
@@ -109,7 +128,30 @@ public class LocationSQL implements LocationInterface {
 
 	@Override
 	public List<GaugeData> getGauges(Location loc) {
-		return null;
+	    //Incomplete
+		String query = "SELECT * FROM dbo.RiverData INNER JOIN dbo.RiverGauge ON dbo.RiverData.GID = dbo.RiverData.GID " +
+				"WHERE dbo.RiverData.GID = dbo.RiverData.GID;";
+		List<GaugeData> gaugeDataList = new ArrayList<>();
+		ResultSet rs = db.queryServer(query);
+		//String riverQuery = "SELECT * FROM dbo.RiverData WHERE GID = " +  + ;"
+
+		try {
+			while (rs.next()) {
+				int gid = rs.getInt("GID");
+				String name = rs.getString("Name");
+				float latitude = rs.getFloat("Lat");
+				float longitude = rs.getFloat("Long");
+				float flowRate = rs.getFloat("FlowRate");
+				float flowLevel = rs.getFloat("FlowLevel");
+				String date = rs.getString("Date");
+				GaugeData gauge = new GaugeData(gid,name, latitude, longitude, flowRate, flowLevel, date);
+				gaugeDataList.add(gauge);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return gaugeDataList;
+
 	}
 
 	@Override
