@@ -3,14 +3,14 @@ package control;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import model.UserInterface;
-import model.UserTester;
+import model.*;
 
 import java.io.IOException;
 
 public class loginController extends Controller{
     @FXML private TextField fieldEmail;
     @FXML private TextField fieldPassword;
+    @FXML private TextField fieldUsername;
     private UserInterface userInterface;
 
 
@@ -25,9 +25,7 @@ public class loginController extends Controller{
 
         if (userInterface.isValidUser(email, password))
         {
-            mainApp.setUser(userInterface.isValidUser(email, password));
-            mainApp.setAdmin(userInterface.isAdmin(email, password));
-            mainApp.setEmail(email);
+            mainApp.setUser(userInterface.getUser(email, password));
             mainApp.showScene("main");
 
         }
@@ -35,7 +33,14 @@ public class loginController extends Controller{
     }
 
     @FXML protected void handleRegisterButtonAction(ActionEvent event) {
-        fieldEmail.setText("register");
+        String email = fieldEmail.getText();
+        String username = fieldUsername.getText();
+        String password = fieldPassword.getText();
+
+        UserInterface userInterface = new UserTester();
+        userInterface.addUser(new User(email, username, password, false, false, ""));
+
+        mainApp.showScene("main");
     }
 
 }
