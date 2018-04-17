@@ -9,16 +9,17 @@ public class Location {
     private FloatProperty longitude = new SimpleFloatProperty();
     private FloatProperty rating = new SimpleFloatProperty();
     private FloatProperty radius = new SimpleFloatProperty();
+    private BooleanProperty validated = new SimpleBooleanProperty();
     private BooleanProperty delete = new SimpleBooleanProperty();
     private StringProperty madeBy = new SimpleStringProperty();
 
 
     public Location(String name, float  latitude, float longitude, float radius, String madeBy)
     {
-        this(name, -1, latitude, longitude, -1, radius, madeBy);
+        this(name, -1, latitude, longitude, -1, radius, madeBy, false);
     }
 
-    public Location(String name, int id, float latitude, float longitude, float rating, float radius, String madeBy) {
+    public Location(String name, int id, float latitude, float longitude, float rating, float radius, String madeBy, boolean validated) {
         this.name.set(name);
         this.id.set(id);
         this.latitude.set(latitude);
@@ -26,6 +27,7 @@ public class Location {
         this.rating.set(rating);
         this.radius.set(radius);
         this.madeBy.set(madeBy);
+        this.validated.set(validated);
     }
 
     public int getID() {
@@ -81,5 +83,17 @@ public class Location {
 
     public FloatProperty longitudeProperty() {
         return longitude;
+    }
+
+    public boolean isValidated() {
+        return validated.get();
+    }
+
+    public BooleanProperty validatedProperty() {
+        return validated;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated.set(validated);
     }
 }
