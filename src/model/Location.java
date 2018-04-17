@@ -53,6 +53,10 @@ public class Location {
 
     }
 
+    public String getMadeBy() {
+        return madeBy.get();
+    }
+
     public boolean isDelete() {
         return delete.get();
     }

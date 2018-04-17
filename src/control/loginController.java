@@ -7,7 +7,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import model.UserInterface;
 import model.UserSQL;
-import model.UserTester;
 
 import java.io.IOException;
 

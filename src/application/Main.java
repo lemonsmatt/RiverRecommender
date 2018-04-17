@@ -32,8 +32,8 @@ public class Main extends Application {
         user = false;
         email = "New User";
         mainStage = primaryStage;
-        LocationInterface locationInterface = new LocationTester();
-        UserInterface userInterface = new UserTester();
+       /// LocationInterface locationInterface = new LocationTester();
+       // UserInterface userInterface = new UserTester();
         initRootLayout(mainStage);
         showScene("main");
 
