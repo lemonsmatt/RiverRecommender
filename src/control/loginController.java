@@ -2,8 +2,11 @@ package control;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import model.*;
+
 
 import java.io.IOException;
 
@@ -16,7 +19,7 @@ public class loginController extends Controller{
 
     @FXML
     public void initialize() {
-        userInterface = new UserTester();
+        userInterface = new UserSQL();
     }
 
     @FXML protected void handleLoginButtonAction(ActionEvent event) throws IOException {
@@ -28,6 +31,9 @@ public class loginController extends Controller{
             mainApp.setUser(userInterface.getUser(email, password));
             mainApp.showScene("main");
 
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid user", ButtonType.OK);
+            alert.showAndWait();
         }
 
     }

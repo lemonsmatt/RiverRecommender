@@ -17,13 +17,15 @@ import java.sql.*;
 import java.util.EmptyStackException;
 
 public class Main extends Application {
+
     private static Stage mainStage;
     private static  Pane rootLayout;
     private static User user;
+    private static Database database;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Database database = new Database();
+        database = new Database();
         user = new User("New User", "", "", false, true, "");
         mainStage = primaryStage;
         LocationInterface locationInterface = new LocationTester();
@@ -79,4 +81,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+    public static Database getDatabase() { return Main.database; };
 }

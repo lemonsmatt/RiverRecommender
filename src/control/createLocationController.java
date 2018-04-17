@@ -23,7 +23,8 @@ public class createLocationController extends  Controller {
 
     @FXML
     public void initialize() {
-        locationInterface = new LocationTester();
+        locationInterface = new LocationSQL();
+
     }
 
     @FXML protected void handleCancelButtonAction(ActionEvent event) throws IOException {

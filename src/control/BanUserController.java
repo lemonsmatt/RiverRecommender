@@ -17,18 +17,21 @@ import java.util.List;
 
 public class BanUserController extends Controller {
 
-    @FXML public TableColumn<String, String> emailCol;
-    @FXML public TableColumn<String, Boolean> banCol;
-    @FXML public TableView<User> table;
+    @FXML
+    public TableColumn<String, String> emailCol;
+    @FXML
+    public TableColumn<String, Boolean> banCol;
+    @FXML
+    public TableView<User> table;
 
     @FXML
     public void initialize() {
-        banCol.setCellValueFactory( new PropertyValueFactory<>( "ban" ));
+        banCol.setCellValueFactory(new PropertyValueFactory<>("ban"));
         banCol.setCellFactory(tc -> new CheckBoxTableCell<>());
 
-        emailCol.setCellValueFactory( new PropertyValueFactory<>( "email" ));
+        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        UserInterface userInterface= new UserTester();
+        UserInterface userInterface = new UserTester();
         final ObservableList<User> items = FXCollections.observableArrayList(userInterface.getBannableUsers());
 
         table.setItems(items);
@@ -36,22 +39,24 @@ public class BanUserController extends Controller {
 
     }
 
-    @FXML protected void handleCancelButtonAction(ActionEvent event) throws IOException {
+    @FXML
+    protected void handleCancelButtonAction(ActionEvent event) throws IOException {
         mainApp.showScene("main");
     }
 
-    @FXML protected void handleSubmitButtonAction(ActionEvent event) {
-        UserInterface userInterface= new UserTester();
+    @FXML
+    protected void handleSubmitButtonAction(ActionEvent event) {
+        UserInterface userInterface = new UserTester();
 
 
         List<User> del = new ArrayList<User>();
-        for (User user: table.getItems()) {
+        for (User user : table.getItems()) {
             if (user.getBan()) {
                 del.add(user);
             }
         }
         table.getItems().remove(del);
-        for (User user: del) {
+        for (User user : del) {
             userInterface.banUser(user, mainApp.getUser().getEmail());
         }
 
