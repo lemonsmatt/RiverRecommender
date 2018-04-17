@@ -6,21 +6,20 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.BanUserController">
    <bottom>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <buttons>
-            <Button fx:id="submitButton" mnemonicParsing="false" text="Submit" />
-          <Button fx:id="returnButton" mnemonicParsing="false" text="cancel" />
+            <Button fx:id="submitButton" mnemonicParsing="false" text="Submit" onAction="#handleSubmitButtonAction" />
+          <Button fx:id="returnButton" mnemonicParsing="false" text="cancel" onAction="#handleCancelButtonAction" />
         </buttons>
       </ButtonBar>
    </bottom>
    <center>
-      <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="emailCol" prefWidth="75.0" text="Email" />
-          <TableColumn fx:id="banCol" prefWidth="75.0" text="Ban" />
+          <TableColumn fx:id="emailCol" prefWidth="362.0" text="Email" />
+          <TableColumn fx:id="banCol" minWidth="0.0" prefWidth="110.0" text="Ban" />
         </columns>
       </TableView>
    </center>
