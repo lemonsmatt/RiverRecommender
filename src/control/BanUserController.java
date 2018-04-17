@@ -31,7 +31,7 @@ public class BanUserController extends Controller {
 
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        UserInterface userInterface = new UserTester();
+        UserInterface userInterface = new UserSQL();
         final ObservableList<User> items = FXCollections.observableArrayList(userInterface.getBannableUsers());
 
         table.setItems(items);
