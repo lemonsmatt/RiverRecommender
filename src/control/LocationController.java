@@ -52,7 +52,6 @@ public class LocationController extends Controller{
     @Override
     public void setHandOff(Object handOff) {
         location = (Location) handOff;
-        System.out.println(location);
         idText.setText(Integer.toString(location.getID()));
 
         final ObservableList<Location> items = FXCollections.observableArrayList(location);

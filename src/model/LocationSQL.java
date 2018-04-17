@@ -108,12 +108,12 @@ public class LocationSQL implements LocationInterface {
 	}
 
 	@Override
-	public List<Gauge> getGauges(Location loc) {
+	public List<GaugeData> getGauges(Location loc) {
 		return null;
 	}
 
 	@Override
-	public List<WeatherStation> getWeatherStations(Location loc) {
+	public List<WeatherData> getWeatherStations(Location loc) {
 		return null;
 	}
 }

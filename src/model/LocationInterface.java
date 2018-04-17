@@ -14,7 +14,7 @@ public interface LocationInterface {
 
     public boolean removeLocation(Location loc);
 
-    public List<Gauge> getGauges(Location loc);
+    public List<GaugeData> getGauges(Location loc);
 
-    public List<WeatherStation> getWeatherStations(Location loc);
+    public List<WeatherData> getWeatherStations(Location loc);
 }
