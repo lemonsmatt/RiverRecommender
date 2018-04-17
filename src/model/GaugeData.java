@@ -12,7 +12,7 @@ public class GaugeData {
     FloatProperty latitude = new SimpleFloatProperty();
     FloatProperty longitude = new SimpleFloatProperty();
     FloatProperty flowRate = new SimpleFloatProperty();
-    FloatProperty flowlevel = new SimpleFloatProperty();
+    FloatProperty flowLevel = new SimpleFloatProperty();
     StringProperty date = new SimpleStringProperty();
 
     public int getgID() {
@@ -75,16 +75,16 @@ public class GaugeData {
         this.flowRate.set(flowRate);
     }
 
-    public float getFlowlevel() {
-        return flowlevel.get();
+    public float getFlowLevel() {
+        return flowLevel.get();
     }
 
-    public FloatProperty flowlevelProperty() {
-        return flowlevel;
+    public FloatProperty flowLevelProperty() {
+        return flowLevel;
     }
 
-    public void setFlowlevel(float flowlevel) {
-        this.flowlevel.set(flowlevel);
+    public void setFlowLevel(float flowLevel) {
+        this.flowLevel.set(flowLevel);
     }
 
     public String getDate() {
@@ -99,13 +99,13 @@ public class GaugeData {
         this.date.set(date);
     }
 
-    public GaugeData(int gID, String name, float latitude, float longitude, float flowRate, float flowlevel, String date) {
+    public GaugeData(int gID, String name, float latitude, float longitude, float flowRate, float flowLevel, String date) {
         this.gID.set(gID);
         this.name.set(name);
         this.latitude.set(latitude);
         this.longitude.set(longitude);
         this.flowRate.set(flowRate);
-        this.flowlevel.set(flowlevel);
+        this.flowLevel.set(flowLevel);
         DateFormat dateFormat = new SimpleDateFormat("YYYYMMDD");
         this.date.set(dateFormat.format(date));
     }

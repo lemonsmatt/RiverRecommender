@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="499.0" prefWidth="741.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.LocationController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="617.0" prefWidth="925.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.LocationController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -22,22 +22,34 @@
                   <TableColumn fx:id="qualityLocCol" prefWidth="77.0" text="Quality" />
               </columns>
             </TableView>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0">
+            <ScrollPane prefHeight="252.0" prefWidth="925.0">
                <content>
-                  <TableView prefHeight="200.0" prefWidth="723.0">
+                  <TableView fx:id="weatherTable" prefHeight="269.0" prefWidth="906.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn fx:id="idWeatherCol" prefWidth="47.0" text="ID" />
+                      <TableColumn fx:id="nameWeatherCol" prefWidth="244.0" text="Name" />
+                        <TableColumn fx:id="dateWeatherCol" prefWidth="71.0" text="Date" />
+                        <TableColumn fx:id="latitudeWeatherCol" prefWidth="81.0" text="Latitude" />
+                        <TableColumn fx:id="longitudeWeatherCol" prefWidth="81.0" text="Longitude" />
+                        <TableColumn fx:id="precipitationWeatherCol" prefWidth="119.0" text="precipitation" />
+                        <TableColumn fx:id="windWeatherCol" prefWidth="76.0" text="wind" />
+                        <TableColumn fx:id="temperatureWeatherCol" prefWidth="104.0" text="Temperature" />
+                        <TableColumn fx:id="visibilityWeatherCol" prefWidth="82.0" text="Visibility" />
                     </columns>
                   </TableView>
                </content>
             </ScrollPane>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0">
+            <ScrollPane prefHeight="254.0" prefWidth="925.0">
                <content>
-                  <TableView prefHeight="200.0" prefWidth="726.0">
+                  <TableView fx:id="gaugeTable" prefHeight="297.0" prefWidth="906.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn fx:id="idGaugeCol" prefWidth="47.0" text="ID" />
+                      <TableColumn fx:id="nameGaugeCol" prefWidth="291.0" text="Name" />
+                        <TableColumn fx:id="dateGaugeCol" prefWidth="89.0" text="Date" />
+                        <TableColumn fx:id="latitudeGaugeCol" prefWidth="104.0" text="Latitude" />
+                        <TableColumn fx:id="longitudeGaugeCol" prefWidth="93.0" text="Longitude" />
+                        <TableColumn fx:id="flowRateGaugeCol" prefWidth="141.0" text="Flow Rate" />
+                        <TableColumn fx:id="flowLevelGaugeCol" prefWidth="140.0" text="Flow Level" />
                     </columns>
                   </TableView>
                </content>
@@ -46,7 +58,7 @@
       </VBox>
    </center>
    <top>
-      <SplitPane dividerPositions="0.06688963210702341" prefHeight="40.0" prefWidth="320.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.06688963210702341" prefHeight="0.0" prefWidth="747.0" BorderPane.alignment="CENTER">
         <items>
             <Label fx:id="idText" prefHeight="16.0" prefWidth="262.0" text="Location ID" />
           <Button fx:id="returnButton" mnemonicParsing="false" onAction="#handleReturnButtonAction" text="return" />
