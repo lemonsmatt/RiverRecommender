@@ -156,6 +156,9 @@ public class LocationSQL implements LocationInterface {
 
 	@Override
 	public List<WeatherData> getWeatherStations(Location loc) {
-		return null;
+	    List<WeatherData> weatherDataList = new ArrayList<>();
+	    
+        return weatherDataList;
+
 	}
 }
