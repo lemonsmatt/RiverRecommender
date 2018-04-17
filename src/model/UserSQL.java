@@ -57,34 +57,25 @@ public class UserSQL implements UserInterface {
 		try {
 			ResultSet rs = db.queryServer(query);
 			while (rs.next()) {
-				if (!rs.getString("UserName").equals("")) {
-					ret = rs.getString("BannedBy");
-					// return ret.equals("");
-					return ret.equals("Chase");
-				}
+				return (rs.getString("BannedBy")) == null;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return true;
+		return false;
 	}
+
 
 	@Override
 	public boolean banUser(String email, String adminUserName) {
 		//Do we need to know admin who banned the user? (BannedBy)
 		String checkingQuery = "SELECT UserName, BannedBy FROM dbo.[User] WHERE Email = '" + email + "';";
-		try {
-			ResultSet rs = db.queryServer(checkingQuery);
-			while (rs.next()) {
-				if (rs.getString("UserName").equals("")) {
-					return false;
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		ResultSet rs = db.queryServer(checkingQuery);
+		if (rs != null) {
+			String query = "UPDATE dbo.[User] SET BannedBy = '" + adminUserName + "' WHERE Email = '" + email + "';";
+			db.queryServerMulti(query);
+			return true;
 		}
-		String query = "UPDATE dbo.[User] SET BannedBy = '" + adminUserName + "' WHERE Email = '" + email + "';";
-		db.queryServer(query);
-		return true;
+		return false;
 	}
 }
