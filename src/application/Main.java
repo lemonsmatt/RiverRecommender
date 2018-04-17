@@ -52,6 +52,24 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
+    public void showScene(String sceneName, Object handoff) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("../view/" + sceneName + ".fxml"));
+            Pane root = loader.load();
+            mainStage.setScene(new Scene(root));
+            mainStage.sizeToScene();
+
+            Controller mainController = loader.getController();
+            mainController.setMainApp(this);
+            mainController.setHandOff(handoff);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initRootLayout(Stage mainStage) {
         try {
             FXMLLoader loader = new FXMLLoader();
