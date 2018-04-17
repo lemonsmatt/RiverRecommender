@@ -37,7 +37,7 @@ public class UserSQL implements UserInterface {
 		String ret;
 		try {
 			ResultSet rs = db.queryServer(query);
-			while (rs.next()) {
+			while (rs != null && rs.next()) {
 				return (rs.getString("BannedBy")) == null;
 			}
 		} catch (SQLException e) {
