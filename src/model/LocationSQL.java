@@ -44,15 +44,15 @@ public class LocationSQL implements LocationInterface {
 
 	@Override
 	public List<Location> getValidatedLocations() {
-		String query = "SELECT Name, Lat, Long, RiverRelevantRadius, WeatherRelevantRadius, Email From dbo.Location WHERE ValidatedBy IS NOT NULL";
+		String query = "SELECT Name, Lat, Long, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy From dbo.Location WHERE ValidatedBy IS NOT NULL";
 		List<Location> list = new ArrayList<>();
 		try {
 			ResultSet rs = db.queryServer(query);
-			while (rs.next()) {
+			while (rs != null && rs.next()) {
 				String name = rs.getString("Name");
 				Float latitude = rs.getFloat("Lat");
 				Float longitude = rs.getFloat("Long");
-				String email = rs.getString("Email");
+				String email = rs.getString("CreatedBy");
 				Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
 				Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
 				Location location = new Location(name, latitude, longitude, riverRelevantRadius, email);
@@ -68,7 +68,7 @@ public class LocationSQL implements LocationInterface {
 
 	@Override
 	public List<Location> getUnvalidatedLocations() {
-		String query = "SELECT Name, Lat, Long, RiverRelevantRadius, WeatherRelevantRadius, Email From dbo.Location WHERE ValidatedBy IS NULL";
+		String query = "SELECT Name, Lat, Long, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy From dbo.Location WHERE ValidatedBy IS NULL";
 		List<Location> list = new ArrayList<>();
 		try {
 			ResultSet rs = db.queryServer(query);
@@ -76,7 +76,7 @@ public class LocationSQL implements LocationInterface {
 				String name = rs.getString("Name");
 				Float latitude = rs.getFloat("Lat");
 				Float longitude = rs.getFloat("Long");
-				String email = rs.getString("Email");
+				String email = rs.getString("CreatedBy");
 				Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
 				Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
 				Location location = new Location(name, latitude, longitude, riverRelevantRadius, email);
