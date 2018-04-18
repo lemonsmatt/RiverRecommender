@@ -2,6 +2,7 @@ package model;
 
 import application.Main;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -157,7 +158,25 @@ public class LocationSQL implements LocationInterface {
 	@Override
 	public List<WeatherData> getWeatherStations(Location loc) {
 	    List<WeatherData> weatherDataList = new ArrayList<>();
-	    
+
+		try {
+			while (rs.next()) {
+				int wID = rs.getInt("WID");
+				String name = rs.getString("Name");
+				float latitude = rs.getFloat("Lat");
+				float longitude = rs.getFloat("Long");
+				float precipitation = rs.getFloat("Precipitation");
+				float wind_mph = rs.getFloat("wind_mph");
+				Date date = rs.getString("Date");
+				float temperature = rs.getFloat("Temperature");
+				float visibility = rs.getFloat("Visibility");
+				WeatherData weatherData = new WeatherData( wID,  name,  latitude,  longitude,  date,  precipitation,  wind_mph,  temperature,  visibility);
+				weatherDataList.add(weatherData);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
         return weatherDataList;
 
 	}
