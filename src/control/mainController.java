@@ -66,7 +66,7 @@ public class mainController extends Controller {
 
 
         LocationInterface locationInterface = new LocationTester();
-        final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocations());
+        final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocationsFull());
 
         table.setItems(items);
 
