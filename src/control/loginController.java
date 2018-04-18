@@ -43,9 +43,16 @@ public class loginController extends Controller{
         String username = fieldUsername.getText();
         String password = fieldPassword.getText();
 
-        UserInterface userInterface = new UserTester();
-        userInterface.addUser(new User(email, username, password, false, false, ""));
-
+        if (email.equals("") || username.equals("") || password.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Empty Field", ButtonType.OK);
+            alert.showAndWait();
+        }
+        UserInterface userInterface = new UserSQL();
+        if (!userInterface.addUser(new User(email, username, password, false, false, "")))
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Duplicate user OR Invalid user", ButtonType.OK);
+            alert.showAndWait();
+        }
         mainApp.showScene("main");
     }
 
