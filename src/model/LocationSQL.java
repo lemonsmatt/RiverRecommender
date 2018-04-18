@@ -41,6 +41,19 @@ public class LocationSQL implements LocationInterface {
 		}
 	}
 
+	@Override
+	public boolean validateLocation(Location loc) {
+		String query = "UPDATE ValidatedBy ='" + loc.getMadeBy() +"' FROM dbo.Location WHERE LID = " + loc.getID() + ";";
+		db.queryServerMulti(query);
+		query = "SELECT ValidatedBy FROM dbo.Location WHERE LID = " + loc.getID() + ";";
+		ResultSet rs = db.queryServer(query);
+		try {
+			return (rs.getString("ValidatedBy").equals(loc.getMadeBy()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	@Override
 	public List<Location> getValidatedLocations() {

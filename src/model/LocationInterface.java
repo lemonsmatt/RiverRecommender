@@ -10,6 +10,8 @@ public interface LocationInterface {
 
     public List<Location> getUnvalidatedLocations();
 
+    boolean validateLocation(Location loc);
+
     public boolean addLocation(Location loc);
 
     public boolean removeLocation(Location loc);

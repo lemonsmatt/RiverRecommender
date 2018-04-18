@@ -57,6 +57,11 @@ public class LocationTester implements LocationInterface {
     }
 
     @Override
+    public boolean validateLocation(Location loc) {
+        return false;
+    }
+
+    @Override
     public List<GaugeData> getGauges(Location loc) {
         return null;
     }
