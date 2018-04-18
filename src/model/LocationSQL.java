@@ -130,8 +130,7 @@ public class LocationSQL implements LocationInterface {
 	@Override
 	public List<GaugeData> getGauges(Location loc) {
 	    //Incomplete
-		String query = "SELECT * FROM dbo.RiverData INNER JOIN dbo.RiverGauge ON dbo.RiverData.GID = dbo.RiverData.GID " +
-				"WHERE dbo.RiverData.GID = dbo.RiverData.GID;";
+		String query = "SELECT * FROM dbo.Location INNER JOIN dbo.RelevantGauge ON dbo.Location.LID = dbo.RelevantGauge.LID INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID;";
 		List<GaugeData> gaugeDataList = new ArrayList<>();
 		ResultSet rs = db.queryServer(query);
 		//String riverQuery = "SELECT * FROM dbo.RiverData WHERE GID = " +  + ;"
@@ -158,8 +157,10 @@ public class LocationSQL implements LocationInterface {
 	@Override
 	public List<WeatherData> getWeatherStations(Location loc) {
 	    List<WeatherData> weatherDataList = new ArrayList<>();
+		String query = "SELECT * FROM dbo.Location INNER JOIN dbo.RelevantStations ON dbo.Location.LID = dbo.RelevantStations.LID INNER JOIN dbo.WeatherStation ON dbo.RelevantStations.WID = dbo.WeatherStation.WID INNER JOIN dbo.WeatherData ON dbo.WeatherStation.WID = dbo.WeatherData.WID;";
 
 		try {
+			ResultSet rs = db.queryServer(query);
 			while (rs.next()) {
 				int wID = rs.getInt("WID");
 				String name = rs.getString("Name");
@@ -167,7 +168,7 @@ public class LocationSQL implements LocationInterface {
 				float longitude = rs.getFloat("Long");
 				float precipitation = rs.getFloat("Precipitation");
 				float wind_mph = rs.getFloat("wind_mph");
-				Date date = rs.getString("Date");
+				Date date = rs.getDate("Date");
 				float temperature = rs.getFloat("Temperature");
 				float visibility = rs.getFloat("Visibility");
 				WeatherData weatherData = new WeatherData( wID,  name,  latitude,  longitude,  date,  precipitation,  wind_mph,  temperature,  visibility);
