@@ -5,9 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import model.*;
@@ -50,7 +48,8 @@ public class LocationController extends Controller{
     @FXML public TableColumn<GaugeData, String> dateGaugeCol;
     @FXML public TableView<GaugeData> gaugeTable;
 
-
+    @FXML public Button rateButton;
+    @FXML public TextField rateField;
 
 
     @FXML
@@ -85,6 +84,25 @@ public class LocationController extends Controller{
     }
 
 
+    @FXML
+    protected void handleRateButtonAction(ActionEvent event) {
+        LocationInterface locationInterface = new LocationTester();
+        float rating = 0;
+        try {
+            rating = Float.parseFloat(rateField.getText());
+            if (rating > 5)
+            {
+                rating = 5;
+            } else if (rating < 0) {
+                rating = 0;
+            }
+        } catch (NumberFormatException e) {
+            rateField.clear();
+            rateField.setPromptText("Rating must be a numerical value");
+            return;
+        }
+        locationInterface.rateLocation(location, rating, mainApp.getUser());
+    }
 
 
     @FXML

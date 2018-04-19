@@ -34,4 +34,7 @@ public interface LocationInterface {
 
     //returns filled out weather stations that are connect to the given location
     public List<WeatherData> getWeatherStations(Location loc);
+
+    //adds a rating for a given location
+    public void rateLocation(Location location, Float rating, User user);
 }
