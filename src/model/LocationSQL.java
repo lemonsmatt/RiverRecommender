@@ -21,7 +21,7 @@ public class LocationSQL implements LocationInterface {
 			String name, madeBy;
 			boolean validatedBy;
 			Integer LID;
-			float latitude, longitude, avgRating, radius;
+			float latitude, longitude, avgRating, radiusRiver, radiusWeather;
 			try {
 				ResultSet rs = db.queryServer(query);
 				while (rs.next()) {
@@ -30,10 +30,11 @@ public class LocationSQL implements LocationInterface {
 					latitude = rs.getFloat("Lat");
 					longitude = rs.getFloat("Long");
 					avgRating = rs.getFloat("Avgrating");
-					radius = rs.getFloat("RiverRelevantRadius");
+					radiusRiver = rs.getFloat("RiverRelevantRadius");
+					radiusWeather = rs.getFloat("WeatherRelevantRadius");
 					madeBy = rs.getString("CreatedBy");
 					validatedBy = rs.getBoolean("ValidatedBy");
-					locList.add(new Location(name, LID, latitude, longitude, avgRating, radius, madeBy, validatedBy));
+					locList.add(new Location(name, LID, latitude, longitude, avgRating, radiusRiver, radiusWeather, madeBy, validatedBy));
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -68,7 +69,7 @@ public class LocationSQL implements LocationInterface {
 				String email = rs.getString("CreatedBy");
 				Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
 				Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
-				Location location = new Location(name, latitude, longitude, riverRelevantRadius, email);
+				Location location = new Location(name, latitude, longitude, riverRelevantRadius, weatherRelevantRadius ,email);
 				//temp
                 //weatherRelevantRadius, email);
 				list.add(location);
@@ -92,7 +93,7 @@ public class LocationSQL implements LocationInterface {
 				String email = rs.getString("CreatedBy");
 				Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
 				Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
-				Location location = new Location(name, latitude, longitude, riverRelevantRadius, email);
+				Location location = new Location(name, latitude, longitude, riverRelevantRadius, weatherRelevantRadius, email);
 				//temp
                 //weatherRelevantRadius, email);
 				list.add(location);
@@ -105,7 +106,7 @@ public class LocationSQL implements LocationInterface {
 
 	@Override
 	public boolean addLocation(Location loc) {
-		String query = "INSERT INTO dbo.Location (LID, Name, Lat, Long, AvgRating, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy) VALUES (" + loc.getID() + ", '" + loc.getName() + "', " +  loc.getLatitude() + ", " + loc.getLongitude() + ", " + loc.getRating() + "', " + loc.getRadius() + ", " + loc.getRadius() + ", '" + loc.getMadeBy() + "' );";
+		String query = "INSERT INTO dbo.Location (LID, Name, Lat, Long, AvgRating, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy) VALUES (" + loc.getID() + ", '" + loc.getName() + "', " +  loc.getLatitude() + ", " + loc.getLongitude() + ", " + loc.getRating() + "', " + loc.getRadiusGauge() + ", " + loc.getRadiusGauge() + ", '" + loc.getMadeBy() + "' );";
 		db.queryServer(query);
 		ResultSet rs;
 		query = "SELECT LID FROM dbo.Location WHERE LID = " + loc.getID();
@@ -135,12 +136,17 @@ public class LocationSQL implements LocationInterface {
 		return false;
 	}
 
-	@Override
-	public List<Location> getValidatedLocationsFull() {
-		return null;
-	}
+    @Override
+    public List<Location> getValidatedLocationsFull() {
+        return null;
+    }
 
-	@Override
+    @Override
+    public List<Location> getValidatedLocationsFull(float latitude, float longitude, float radius, String name, int id) {
+        return null;
+    }
+
+    @Override
 	public List<GaugeData> getGauges(Location loc) {
 	    //Incomplete
 		String query = "SELECT * FROM dbo.Location INNER JOIN dbo.RelevantGauge ON dbo.Location.LID = dbo.RelevantGauge.LID INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID;";

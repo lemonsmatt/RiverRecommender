@@ -10,10 +10,10 @@ public class LocationTester implements LocationInterface {
     public LocationTester() {
         if (locList.isEmpty())
         {
-            locList.add(new Location("Utah", 1,32, 71, 3,2, "lemons", false));
-            locList.add(new Location("Zion", 2,35, 61, 1,9, "lemons", false));
-            locList.add(new Location("Springdale", 3,32, 11, 3,3, "lemons", true));
-            locList.add(new Location("Kolob", 4,12, 81, 2,5, "lemons", false));
+            locList.add(new Location("Utah", 1,32, 71, 4, 3,2, "lemons", false));
+            locList.add(new Location("Zion", 2,35, 4, 61, 1,9, "lemons", false));
+            locList.add(new Location("Springdale", 3,32,4 ,11, 3,3, "lemons", true));
+            locList.add(new Location("Kolob", 4,12, 81,44, 2,5, "lemons", false));
         }
     }
 
@@ -68,6 +68,11 @@ public class LocationTester implements LocationInterface {
 
     @Override
     public List<WeatherData> getWeatherStations(Location loc) {
+        return null;
+    }
+
+    @Override
+    public List<Location> getValidatedLocationsFull(float latitude, float longitude, float radius, String name, int id) {
         return null;
     }
 }

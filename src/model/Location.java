@@ -8,7 +8,8 @@ public class Location {
     private FloatProperty latitude = new SimpleFloatProperty();
     private FloatProperty longitude = new SimpleFloatProperty();
     private FloatProperty rating = new SimpleFloatProperty();
-    private FloatProperty radius = new SimpleFloatProperty();
+    private FloatProperty radiusGauge = new SimpleFloatProperty();
+    private FloatProperty radiusWeather = new SimpleFloatProperty();
     private BooleanProperty validated = new SimpleBooleanProperty();
     private BooleanProperty delete = new SimpleBooleanProperty();
     private StringProperty madeBy = new SimpleStringProperty();
@@ -18,18 +19,19 @@ public class Location {
     private FloatProperty flowDelta = new SimpleFloatProperty();
     private FloatProperty heightDelta = new SimpleFloatProperty();
 
-    public Location(String name, float  latitude, float longitude, float radius, String madeBy)
+    public Location(String name, float  latitude, float longitude, float radiusGauge, float radiusWeather, String madeBy)
     {
-        this(name, -1, latitude, longitude, -1, radius, madeBy, false);
+        this(name, -1, latitude, longitude, -1, radiusGauge,radiusWeather , madeBy, false);
     }
 
-    public Location(String name, int id, float latitude, float longitude, float rating, float radius, String madeBy, boolean validated) {
+    public Location(String name, int id, float latitude, float longitude, float rating, float radiusGauge, float radiusWeather, String madeBy, boolean validated) {
         this.name.set(name);
         this.id.set(id);
         this.latitude.set(latitude);
         this.longitude.set(longitude);
         this.rating.set(rating);
-        this.radius.set(radius);
+        this.radiusGauge.set(radiusGauge);
+        this.radiusWeather.set(radiusWeather);
         this.madeBy.set(madeBy);
         this.validated.set(validated);
     }
@@ -54,8 +56,8 @@ public class Location {
         return rating.get();
     }
 
-    public float getRadius() {
-        return radius.get();
+    public float getRadiusGauge() {
+        return radiusGauge.get();
 
     }
 
@@ -81,8 +83,8 @@ public class Location {
         return rating;
     }
 
-    public FloatProperty radiusProperty() {
-        return radius;
+    public FloatProperty radiusGaugeProperty() {
+        return radiusGauge;
     }
 
     public FloatProperty latitudeProperty() {
@@ -165,6 +167,18 @@ public class Location {
         this.heightDelta.set(heightDelta);
     }
 
+    public float getRadiusWeather() {
+        return radiusWeather.get();
+    }
+
+    public FloatProperty radiusWeatherProperty() {
+        return radiusWeather;
+    }
+
+    public void setRadiusWeather(float radiusWeather) {
+        this.radiusWeather.set(radiusWeather);
+    }
+
     @Override
     public String toString() {
         return "Location{" +
@@ -173,7 +187,8 @@ public class Location {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", rating=" + rating +
-                ", radius=" + radius +
+                ", radiusGauge=" + radiusGauge +
+                ", radiusWeather=" + radiusWeather +
                 ", validated=" + validated +
                 ", madeBy=" + madeBy +
                 '}';

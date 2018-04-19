@@ -17,7 +17,9 @@ public class createLocationController extends  Controller {
     @FXML
     private TextField fieldLatitude;
     @FXML
-    private TextField fieldRadius;
+    private TextField fieldGaugeRadius;
+    @FXML
+    private TextField fieldWeatherRadius;
 
     private LocationInterface locationInterface;
 
@@ -34,7 +36,8 @@ public class createLocationController extends  Controller {
     @FXML protected void handleSubmitButtonAction(ActionEvent event) {
         float latitude = 0;
         float longitude = 0;
-        int radius = 0;
+        float radiusGauge = 0;
+        float radiusWeather = 0;
         boolean end = false;
         try {
             latitude = Float.parseFloat(fieldLatitude.getText());
@@ -53,18 +56,26 @@ public class createLocationController extends  Controller {
             end= true;
         }
         try {
-            radius = Integer.parseInt(fieldRadius.getText());
+            radiusGauge = Float.parseFloat(fieldGaugeRadius.getText());
         } catch (NumberFormatException e)
         {
-            fieldRadius.clear();
-            fieldRadius.setPromptText("Must be a numerical value");
+            fieldGaugeRadius.clear();
+            fieldGaugeRadius.setPromptText("Must be a numerical value");
+            end= true;
+        }
+        try {
+            radiusWeather = Float.parseFloat(fieldWeatherRadius.getText());
+        } catch (NumberFormatException e)
+        {
+            fieldWeatherRadius.clear();
+            fieldWeatherRadius.setPromptText("Must be a numerical value");
             end= true;
         }
         if (end)
         {
             return;
         }
-        Location loc = new Location(fieldName.getText(), latitude, longitude, radius, mainApp.getUser().getEmail());
+        Location loc = new Location(fieldName.getText(), latitude, longitude, radiusGauge, radiusWeather, mainApp.getUser().getEmail());
         if (locationInterface.addLocation(loc))
         {
             mainApp.showScene("main");

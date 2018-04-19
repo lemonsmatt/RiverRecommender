@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.createLocationController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.createLocationController">
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -21,24 +21,27 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label text="Name" />
             <Label text="Latitude" GridPane.rowIndex="1" />
             <Label text="Longitude" GridPane.rowIndex="2" />
-            <Label text="Relevant Radius" GridPane.rowIndex="3" />
+            <Label text="Gauge Radius" GridPane.rowIndex="3" />
             <TextField fx:id="fieldName" promptText="Enter location name" GridPane.columnIndex="1" />
             <TextField fx:id="fieldLatitude" promptText="Enter location latitude" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="fieldLongitude" promptText="Enter location longitude" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="fieldRadius" promptText="Enter relevant radius" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="fieldGaugeRadius" promptText="Enter radius of relevant river gauges" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Weather Radius" GridPane.rowIndex="4" />
+            <TextField fx:id="fieldWeatherRadius" promptText="Enter radius of relevant weather stations" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </center>
    <bottom>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <buttons>
-            <Button mnemonicParsing="false" text="Submit" onAction="#handleSubmitButtonAction" />
-          <Button mnemonicParsing="false" text="Cancel" onAction="#handleCancelButtonAction"/>
+            <Button mnemonicParsing="false" onAction="#handleSubmitButtonAction" text="Submit" />
+          <Button mnemonicParsing="false" onAction="#handleCancelButtonAction" text="Cancel" />
         </buttons>
       </ButtonBar>
    </bottom>
