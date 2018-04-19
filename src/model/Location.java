@@ -21,8 +21,19 @@ public class Location {
 
     public Location(String name, float  latitude, float longitude, float radiusGauge, float radiusWeather, String madeBy)
     {
-        this(name, Location.generateLID(name, madeBy), latitude, longitude, radiusGauge,radiusWeather ,
-                madeBy, false);
+        this(name, -1, latitude, longitude, -1, radiusGauge,radiusWeather , madeBy, false);
+    }
+
+    public Location(String name, int id, float latitude, float longitude, float rating, float radiusGauge, float radiusWeather, String madeBy, boolean validated) {
+        this.name.set(name);
+        this.id.set(id);
+        this.latitude.set(latitude);
+        this.longitude.set(longitude);
+        this.rating.set(rating);
+        this.radiusGauge.set(radiusGauge);
+        this.radiusWeather.set(radiusWeather);
+        this.madeBy.set(madeBy);
+        this.validated.set(validated);
     }
 
     public Location(String name, int id, float latitude, float longitude, float radiusGauge, float radiusWeather, String madeBy, boolean validated) {
@@ -30,7 +41,6 @@ public class Location {
         this.id.set(id);
         this.latitude.set(latitude);
         this.longitude.set(longitude);
-        this.rating.set(rating);
         this.radiusGauge.set(radiusGauge);
         this.radiusWeather.set(radiusWeather);
         this.madeBy.set(madeBy);
