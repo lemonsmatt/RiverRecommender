@@ -119,6 +119,45 @@ public class LocationSQL implements LocationInterface {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		query = "SELECT * FROM dbo.RiverGauge;";
+		rs = db.queryServer(query);
+		try {
+			while (rs.next()) {
+				float temp_lat = rs.getFloat("Lat");
+				float temp_long = rs.getFloat("Long");
+				float radius = rs.getFloat("RiverRelevantRadius");
+				int gID = rs.getInt("GID");
+				double distance = Math.hypot(loc.getLatitude()-temp_lat, loc.getLongitude()-temp_long);
+				if (distance <= radius) {
+					query = "INSERT INTO dbo.RelevantGauge (LID, GID) VALUES (" + loc.getID() + ", " + gID
+							+ ");";
+					db.queryServerMulti(query);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		query = "SELECT * FROM dbo.WeatherStation;";
+		rs = db.queryServer(query);
+		try {
+			while (rs.next()) {
+				float temp_lat = rs.getFloat("Lat");
+				float temp_long = rs.getFloat("Long");
+				float radius = rs.getFloat("WeatherRelevantRadius");
+				int wID = rs.getInt("WID");
+				double distance = Math.hypot(loc.getLatitude()-temp_lat, loc.getLongitude()-temp_long);
+				if (distance <= radius) {
+					query = "INSERT INTO dbo.RelevantStations (LID, WID) VALUES (" + loc.getID() + ", " + wID
+							+ ");";
+					db.queryServerMulti(query);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 
