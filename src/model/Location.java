@@ -193,4 +193,8 @@ public class Location {
                 ", madeBy=" + madeBy +
                 '}';
     }
+
+    public static int generateLID(String name, String madeby){
+        return  name.hashCode() + madeby.hashCode();
+    }
 }
