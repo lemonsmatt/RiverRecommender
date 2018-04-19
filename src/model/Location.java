@@ -45,6 +45,7 @@ public class Location {
         this.radiusWeather.set(radiusWeather);
         this.madeBy.set(madeBy);
         this.validated.set(validated);
+        this.rating.set(-1);
     }
 
     public int getID() {
