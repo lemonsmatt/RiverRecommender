@@ -40,7 +40,7 @@ public class DeleteLocationController extends Controller {
 
 
 
-        LocationInterface locationInterface = new LocationTester();
+        LocationInterface locationInterface = mainApp.getLocationInterface();
         final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocations());
 
         table.setItems(items);
@@ -53,7 +53,7 @@ public class DeleteLocationController extends Controller {
     }
 
     @FXML protected void handleSubmitButtonAction(ActionEvent event) {
-        LocationInterface locationInterface = new LocationTester();
+        LocationInterface locationInterface = mainApp.getLocationInterface();
 
 
         List<Location> del = new ArrayList<Location>();

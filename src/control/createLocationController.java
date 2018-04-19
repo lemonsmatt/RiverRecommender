@@ -25,7 +25,7 @@ public class createLocationController extends  Controller {
 
     @FXML
     public void initialize() {
-        locationInterface = new LocationSQL();
+        locationInterface = mainApp.getLocationInterface();
 
     }
 

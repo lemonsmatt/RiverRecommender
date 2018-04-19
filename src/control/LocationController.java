@@ -87,7 +87,7 @@ public class LocationController extends Controller{
 
     @FXML
     protected void handleRateButtonAction(ActionEvent event) {
-        LocationInterface locationInterface = new LocationTester();
+        LocationInterface locationInterface = mainApp.getLocationInterface();;
         float rating = 0;
         try {
             rating = Float.parseFloat(rateField.getText());
@@ -121,7 +121,7 @@ public class LocationController extends Controller{
 
         locTable.setItems(items);
 
-        LocationInterface locationInterface = new LocationTester();
+        LocationInterface locationInterface = mainApp.getLocationInterface();;
 
         final ObservableList<WeatherData> itemsWeather = FXCollections.observableArrayList(locationInterface.getWeatherStations(location));
         weatherTable.setItems(itemsWeather);

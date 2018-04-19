@@ -31,7 +31,7 @@ public class BanUserController extends Controller {
 
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
 
-        UserInterface userInterface = new UserSQL();
+        UserInterface userInterface = mainApp.getUserInterface();
         final ObservableList<User> items = FXCollections.observableArrayList(userInterface.getBannableUsers());
 
         table.setItems(items);
@@ -46,7 +46,7 @@ public class BanUserController extends Controller {
 
     @FXML
     protected void handleSubmitButtonAction(ActionEvent event) {
-        UserInterface userInterface = new UserTester();
+        UserInterface userInterface = mainApp.getUserInterface();
 
 
         List<User> del = new ArrayList<User>();

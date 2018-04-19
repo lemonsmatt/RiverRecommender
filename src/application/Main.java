@@ -22,14 +22,16 @@ public class Main extends Application {
     private static  Pane rootLayout;
     private static User user;
     private static Database database;
+    private static LocationInterface locationInterface;
+    private static UserInterface userInterface;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         database = new Database();
         user = new User("New User", "", "", false, true, "");
         mainStage = primaryStage;
-        LocationInterface locationInterface = new LocationTester();
-        UserInterface userInterface = new UserTester();
+        locationInterface = new LocationTester();
+        userInterface = new UserTester();
         initRootLayout(mainStage);
         showScene("main");
 
@@ -101,4 +103,12 @@ public class Main extends Application {
     }
 
     public static Database getDatabase() { return Main.database; };
+
+    public static LocationInterface getLocationInterface() {
+        return locationInterface;
+    }
+
+    public static UserInterface getUserInterface() {
+        return userInterface;
+    }
 }

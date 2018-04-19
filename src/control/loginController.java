@@ -19,7 +19,7 @@ public class loginController extends Controller{
 
     @FXML
     public void initialize() {
-        userInterface = new UserTester();
+        userInterface = mainApp.getUserInterface();
     }
 
     @FXML protected void handleLoginButtonAction(ActionEvent event) throws IOException {

@@ -69,7 +69,7 @@ public class mainController extends Controller {
         heightCol.setCellValueFactory( new PropertyValueFactory<>( "heightDelta" ));
 
 
-        LocationInterface locationInterface = new LocationTester();
+        LocationInterface locationInterface = mainApp.getLocationInterface();
         final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocationsFull());
 
         table.setItems(items);
@@ -147,7 +147,7 @@ public class mainController extends Controller {
         if(end) {
             return;
         }
-        LocationInterface locationInterface = new LocationTester();
+        LocationInterface locationInterface = mainApp.getLocationInterface();
         final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocationsFull(latitude, longitude, radius, name, id));
 
         table.setItems(items);
