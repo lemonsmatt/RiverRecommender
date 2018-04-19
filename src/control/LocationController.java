@@ -103,6 +103,7 @@ public class LocationController extends Controller{
             return;
         }
         locationInterface.rateLocation(location, rating, mainApp.getUser());
+        rateField.clear();
     }
 
 
