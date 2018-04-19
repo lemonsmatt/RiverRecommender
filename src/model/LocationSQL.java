@@ -200,4 +200,9 @@ public class LocationSQL implements LocationInterface {
         return weatherDataList;
 
 	}
+
+	@Override
+	public void rateLocation(Location location, Float rating, User user) {
+
+	}
 }

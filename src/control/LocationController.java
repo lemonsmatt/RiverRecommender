@@ -78,7 +78,8 @@ public class LocationController extends Controller{
         flowLevelGaugeCol.setCellValueFactory( new PropertyValueFactory<>( "flowLevel" ));
         dateGaugeCol.setCellValueFactory( new PropertyValueFactory<>( "date" ));
 
-
+        rateField.setVisible(!mainApp.getUser().getBan());
+        rateButton.setVisible(!mainApp.getUser().getBan());
 
 
     }

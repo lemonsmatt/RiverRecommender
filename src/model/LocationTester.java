@@ -75,4 +75,9 @@ public class LocationTester implements LocationInterface {
     public List<Location> getValidatedLocationsFull(float latitude, float longitude, float radius, String name, int id) {
         return null;
     }
+
+    @Override
+    public void rateLocation(Location location, Float rating, User user) {
+
+    }
 }
