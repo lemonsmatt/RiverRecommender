@@ -9,200 +9,291 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationSQL implements LocationInterface {
-	private Database db;
-	public static List<Location> locList = new ArrayList<Location>();
+    private Database db;
+    public static List<Location> locList = new ArrayList<Location>();
 
-	public LocationSQL() {
-		this.db = Main.getDatabase();
-		String query = "SELECT Name, LID, Lat, Long, Avgrating, RiverRelevantRadius, CreatedBy, ValidatedBy FROM dbo.Location;";
-		if (locList.isEmpty())
-		{
+    public LocationSQL() {
+        this.db = Main.getDatabase();
+        /*
+        String query = "SELECT Name, LID, Lat, Long, Avgrating, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy, " +
+                "ValidatedBy FROM dbo.Location;";
+        if (locList.isEmpty()) {
 
-			String name, madeBy;
-			boolean validatedBy;
-			Integer LID;
-			float latitude, longitude, avgRating, radiusRiver, radiusWeather;
-			try {
-				ResultSet rs = db.queryServer(query);
-				while (rs.next()) {
-					name = rs.getString("Name");
-					LID = rs.getInt("LID");
-					latitude = rs.getFloat("Lat");
-					longitude = rs.getFloat("Long");
-					avgRating = rs.getFloat("Avgrating");
-					radiusRiver = rs.getFloat("RiverRelevantRadius");
-					radiusWeather = rs.getFloat("WeatherRelevantRadius");
-					madeBy = rs.getString("CreatedBy");
-					validatedBy = rs.getBoolean("ValidatedBy");
-					locList.add(new Location(name, LID, latitude, longitude, avgRating, radiusRiver, radiusWeather, madeBy, validatedBy));
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+            String name, madeBy;
+            boolean validatedBy;
+            Integer LID;
+            float latitude, longitude, avgRating, radiusRiver, radiusWeather;
+            try {
+                ResultSet rs = db.queryServer(query);
+                while (rs.next()) {
+                    name = rs.getString("Name");
+                    LID = rs.getInt("LID");
+                    latitude = rs.getFloat("Lat");
+                    longitude = rs.getFloat("Long");
+                    avgRating = rs.getFloat("Avgrating");
+                    radiusRiver = rs.getFloat("RiverRelevantRadius");
+                    radiusWeather = rs.getFloat("WeatherRelevantRadius");
+                    madeBy = rs.getString("CreatedBy");
+                    validatedBy = rs.getBoolean("ValidatedBy");
+                    locList.add(new Location(name, LID, latitude, longitude, avgRating, radiusRiver, radiusWeather, madeBy, validatedBy));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        */
+    }
 
-	@Override
-	public boolean validateLocation(Location loc) {
-		String query = "UPDATE ValidatedBy ='" + loc.getMadeBy() +"' FROM dbo.Location WHERE LID = " + loc.getID() + ";";
-		db.queryServerMulti(query);
-		query = "SELECT ValidatedBy FROM dbo.Location WHERE LID = " + loc.getID() + ";";
-		ResultSet rs = db.queryServer(query);
-		try {
-			return (rs.getString("ValidatedBy").equals(loc.getMadeBy()));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+    @Override
+    public boolean validateLocation(Location loc) {
+        String query = "UPDATE ValidatedBy ='" + loc.getMadeBy() + "' FROM dbo.Location WHERE LID = " + loc.getID() + ";";
+        db.queryServerMulti(query);
+        query = "SELECT ValidatedBy FROM dbo.Location WHERE LID = " + loc.getID() + ";";
+        ResultSet rs = db.queryServer(query);
+        try {
+            return (rs.getString("ValidatedBy").equals(loc.getMadeBy()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-	@Override
-	public List<Location> getValidatedLocations() {
-		String query = "SELECT Name, Lat, Long, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy From dbo.Location WHERE ValidatedBy IS NOT NULL";
-		List<Location> list = new ArrayList<>();
-		try {
-			ResultSet rs = db.queryServer(query);
-			while (rs != null && rs.next()) {
-				String name = rs.getString("Name");
-				Float latitude = rs.getFloat("Lat");
-				Float longitude = rs.getFloat("Long");
-				String email = rs.getString("CreatedBy");
-				Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
-				Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
-				Location location = new Location(name, latitude, longitude, riverRelevantRadius, weatherRelevantRadius ,email);
-				//temp
+    @Override
+    public List<Location> getValidatedLocations() {
+        String query = "SELECT Name, Lat, Long, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy From dbo.Location WHERE ValidatedBy IS NOT NULL";
+        List<Location> list = new ArrayList<>();
+        try {
+            ResultSet rs = db.queryServer(query);
+            while (rs != null && rs.next()) {
+                String name = rs.getString("Name");
+                Float latitude = rs.getFloat("Lat");
+                Float longitude = rs.getFloat("Long");
+                String email = rs.getString("CreatedBy");
+                Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
+                Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
+                Location location = new Location(name, latitude, longitude, riverRelevantRadius, weatherRelevantRadius, email);
+                //temp
                 //weatherRelevantRadius, email);
-				list.add(location);
-			}
-		} catch (SQLException e) {
-			return null;
-		}
-		return list;
-	}
+                list.add(location);
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+        return list;
+    }
 
-	@Override
-	public List<Location> getUnvalidatedLocations() {
-		String query = "SELECT Name, Lat, Long, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy From dbo.Location WHERE ValidatedBy IS NULL";
-		List<Location> list = new ArrayList<>();
-		try {
-			ResultSet rs = db.queryServer(query);
-			while (rs.next()) {
-				String name = rs.getString("Name");
-				Float latitude = rs.getFloat("Lat");
-				Float longitude = rs.getFloat("Long");
-				String email = rs.getString("CreatedBy");
-				Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
-				Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
-				Location location = new Location(name, latitude, longitude, riverRelevantRadius, weatherRelevantRadius, email);
-				//temp
+    @Override
+    public List<Location> getUnvalidatedLocations() {
+        String query = "SELECT Name, Lat, Long, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy From dbo.Location WHERE ValidatedBy IS NULL";
+        List<Location> list = new ArrayList<>();
+        try {
+            ResultSet rs = db.queryServer(query);
+            while (rs.next()) {
+                String name = rs.getString("Name");
+                Float latitude = rs.getFloat("Lat");
+                Float longitude = rs.getFloat("Long");
+                String email = rs.getString("CreatedBy");
+                Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
+                Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
+                Location location = new Location(name, latitude, longitude, riverRelevantRadius, weatherRelevantRadius, email);
+                //temp
                 //weatherRelevantRadius, email);
-				list.add(location);
-			}
-		} catch (SQLException e) {
-			return null;
-		}
-		return list;
-	}
+                list.add(location);
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+        return list;
+    }
 
-	@Override
-	public boolean addLocation(Location loc) {
-		String query = "INSERT INTO dbo.Location (LID, Name, Lat, Long, AvgRating, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy) VALUES (" + loc.getID() + ", '" + loc.getName() + "', " +  loc.getLatitude() + ", " + loc.getLongitude() + ", " + loc.getRating() + "', " + loc.getRadiusGauge() + ", " + loc.getRadiusGauge() + ", '" + loc.getMadeBy() + "' );";
-		db.queryServer(query);
-		ResultSet rs;
-		query = "SELECT LID FROM dbo.Location WHERE LID = " + loc.getID();
-		rs = db.queryServer(query);
-		try {
-			while (rs.next()) {
-				Integer id = rs.getInt("LID");
-				return id == loc.getID();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+    @Override
+    public boolean addLocation(Location loc) {
+        String query = "INSERT INTO dbo.Location (LID, Name, Lat, Long, AvgRating, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy) VALUES (" + loc.getID() + ", '" + loc.getName() + "', " + loc.getLatitude() + ", " + loc.getLongitude() + ", " + loc.getRating() + "', " + loc.getRadiusGauge() + ", " + loc.getRadiusGauge() + ", '" + loc.getMadeBy() + "' );";
+        db.queryServer(query);
+        ResultSet rs;
+        query = "SELECT LID FROM dbo.Location WHERE LID = " + loc.getID();
+        rs = db.queryServer(query);
+        try {
+            while (rs.next()) {
+                Integer id = rs.getInt("LID");
+                return id == loc.getID();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-	@Override
-	public boolean removeLocation(Location loc) {
-		String query = "DELETE * FROM dbo.Location WHERE id = " + loc.getID()+ ";";
-		db.queryServer(query);
-		query = "SELECT LID FROM dbo.Location WHERE id = " + loc.getID() + ";";
-		ResultSet rs = db.queryServer(query);
-		try {
-			return rs.getInt("LID") == 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+        query = "SELECT * FROM dbo.RiverGauge;";
+        rs = db.queryServer(query);
+        try {
+            while (rs.next()) {
+                float temp_lat = rs.getFloat("Lat");
+                float temp_long = rs.getFloat("Long");
+                float radius = rs.getFloat("RiverRelevantRadius");
+                int gID = rs.getInt("GID");
+                double distance = Math.hypot(loc.getLatitude() - temp_lat, loc.getLongitude() - temp_long);
+                if (distance <= radius) {
+                    query = "INSERT INTO dbo.RelevantGauge (LID, GID) VALUES (" + loc.getID() + ", " + gID
+                            + ");";
+                    db.queryServerMulti(query);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        query = "SELECT * FROM dbo.WeatherStation;";
+        rs = db.queryServer(query);
+        try {
+            while (rs.next()) {
+                float temp_lat = rs.getFloat("Lat");
+                float temp_long = rs.getFloat("Long");
+                float radius = rs.getFloat("WeatherRelevantRadius");
+                int wID = rs.getInt("WID");
+                double distance = Math.hypot(loc.getLatitude() - temp_lat, loc.getLongitude() - temp_long);
+                if (distance <= radius) {
+                    query = "INSERT INTO dbo.RelevantStations (LID, WID) VALUES (" + loc.getID() + ", " + wID
+                            + ");";
+                    db.queryServerMulti(query);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean removeLocation(Location loc) {
+        String query = "DELETE * FROM dbo.Location WHERE id = " + loc.getID() + ";";
+        db.queryServer(query);
+        query = "SELECT LID FROM dbo.Location WHERE id = " + loc.getID() + ";";
+        ResultSet rs = db.queryServer(query);
+        try {
+            return rs.getInt("LID") == 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     @Override
     public List<Location> getValidatedLocationsFull() {
-        return null;
+        String query = "SELECT LID, Lat, Long, Name, AvgRating, RiverRelevantRadius, WeatherRelevantRadius," +
+                " CreatedBy, " + "ValidatedBy " +
+                "From dbo.Location WHERE ValidatedBy IS NOT NULL";
+        List<Location> list = new ArrayList<>();
+        try {
+            ResultSet rs = db.queryServer(query);
+            while (rs != null && rs.next()) {
+                int LID = rs.getInt("LID");
+                Float longitude = rs.getFloat("Long");
+                Float latitude = rs.getFloat("Lat");
+                String name = rs.getString("Name");
+                float avgRating = rs.getFloat("AvgRating");
+                String email = rs.getString("CreatedBy");
+                Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
+                Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
+                String validatedBy = rs.getString("ValidatedBy");
+                Location location = new Location(name, LID, latitude, longitude, avgRating,
+                        riverRelevantRadius,
+                        weatherRelevantRadius, email, validatedBy != null);
+                list.add(location);
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+        return list;
     }
 
     @Override
-    public List<Location> getValidatedLocationsFull(float latitude, float longitude, float radius, String name, int id) {
-        return null;
+    public List<Location> getValidatedLocationsFull(float latitude, float longitude, float radius, String name) {
+        String query = "SELECT LID, Lat, Long, Name, AvgRating, RiverRelevantRadius, WeatherRelevantRadius," +
+                " CreatedBy, " + "ValidatedBy " +
+                "From dbo.Location WHERE ValidatedBy IS NOT NULL and Lat BETWEEN " + (latitude - (0.5 *
+                radius)) + " AND " + (latitude + (0.5 * radius)) + " and Long BETWEEN " + (longitude - (0.5
+                * radius)) + " AND " + (longitude + (0.5) * radius) + " and (Name LIKE '%" + name + "%');";
+        List<Location> list = new ArrayList<>();
+        try {
+            ResultSet rs = db.queryServer(query);
+            while (rs != null && rs.next()) {
+                int LID = rs.getInt("LID");
+                Float varLong = rs.getFloat("Long");
+                Float varLat = rs.getFloat("Lat");
+                String tempName = rs.getString("Name");
+                float avgRating = rs.getFloat("AvgRating");
+                String email = rs.getString("CreatedBy");
+                Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
+                Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
+                String validatedBy = rs.getString("ValidatedBy");
+                Location location = new Location(name, LID, latitude, longitude, avgRating,
+                        riverRelevantRadius,
+                        weatherRelevantRadius, email, validatedBy != null);
+                list.add(location);
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+        return list;
     }
 
     @Override
-	public List<GaugeData> getGauges(Location loc) {
-	    //Incomplete
-		String query = "SELECT * FROM dbo.Location INNER JOIN dbo.RelevantGauge ON dbo.Location.LID = dbo.RelevantGauge.LID INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID;";
-		List<GaugeData> gaugeDataList = new ArrayList<>();
-		ResultSet rs = db.queryServer(query);
-		//String riverQuery = "SELECT * FROM dbo.RiverData WHERE GID = " +  + ;"
+    public List<GaugeData> getGauges(Location loc) {
+        //Incomplete
+        String query = "SELECT * FROM dbo.Location INNER JOIN dbo.RelevantGauge ON dbo.Location.LID = dbo.RelevantGauge.LID INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID;";
+        List<GaugeData> gaugeDataList = new ArrayList<>();
+        ResultSet rs = db.queryServer(query);
+        //String riverQuery = "SELECT * FROM dbo.RiverData WHERE GID = " +  + ;"
 
-		try {
-			while (rs.next()) {
-				int gid = rs.getInt("GID");
-				String name = rs.getString("Name");
-				float latitude = rs.getFloat("Lat");
-				float longitude = rs.getFloat("Long");
-				float flowRate = rs.getFloat("FlowRate");
-				float flowLevel = rs.getFloat("FlowLevel");
-				String date = rs.getString("Date");
-				GaugeData gauge = new GaugeData(gid,name, latitude, longitude, flowRate, flowLevel, date);
-				gaugeDataList.add(gauge);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return gaugeDataList;
+        try {
+            while (rs.next()) {
+                int gid = rs.getInt("GID");
+                String name = rs.getString("Name");
+                float latitude = rs.getFloat("Lat");
+                float longitude = rs.getFloat("Long");
+                float flowRate = rs.getFloat("FlowRate");
+                float flowLevel = rs.getFloat("FlowLevel");
+                String date = rs.getString("Date");
+                GaugeData gauge = new GaugeData(gid, name, latitude, longitude, flowRate, flowLevel, date);
+                gaugeDataList.add(gauge);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return gaugeDataList;
 
-	}
+    }
 
-	@Override
-	public List<WeatherData> getWeatherStations(Location loc) {
-	    List<WeatherData> weatherDataList = new ArrayList<>();
-		String query = "SELECT * FROM dbo.Location INNER JOIN dbo.RelevantStations ON dbo.Location.LID = dbo.RelevantStations.LID INNER JOIN dbo.WeatherStation ON dbo.RelevantStations.WID = dbo.WeatherStation.WID INNER JOIN dbo.WeatherData ON dbo.WeatherStation.WID = dbo.WeatherData.WID;";
+    @Override
+    public List<WeatherData> getWeatherStations(Location loc) {
+        List<WeatherData> weatherDataList = new ArrayList<>();
+        String query = "SELECT * FROM dbo.Location INNER JOIN dbo.RelevantStations ON dbo.Location.LID = dbo.RelevantStations.LID INNER JOIN dbo.WeatherStation ON dbo.RelevantStations.WID = dbo.WeatherStation.WID INNER JOIN dbo.WeatherData ON dbo.WeatherStation.WID = dbo.WeatherData.WID;";
 
-		try {
-			ResultSet rs = db.queryServer(query);
-			while (rs.next()) {
-				int wID = rs.getInt("WID");
-				String name = rs.getString("Name");
-				float latitude = rs.getFloat("Lat");
-				float longitude = rs.getFloat("Long");
-				float precipitation = rs.getFloat("Precipitation");
-				float wind_mph = rs.getFloat("wind_mph");
-				Date date = rs.getDate("Date");
-				float temperature = rs.getFloat("Temperature");
-				float visibility = rs.getFloat("Visibility");
-				WeatherData weatherData = new WeatherData( wID,  name,  latitude,  longitude,  date,  precipitation,  wind_mph,  temperature,  visibility);
-				weatherDataList.add(weatherData);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+        try {
+            ResultSet rs = db.queryServer(query);
+            while (rs.next()) {
+                int wID = rs.getInt("WID");
+                String name = rs.getString("Name");
+                float latitude = rs.getFloat("Lat");
+                float longitude = rs.getFloat("Long");
+                float precipitation = rs.getFloat("Precipitation");
+                float wind_mph = rs.getFloat("wind_mph");
+                Date date = rs.getDate("Date");
+                float temperature = rs.getFloat("Temperature");
+                float visibility = rs.getFloat("Visibility");
+                WeatherData weatherData = new WeatherData(wID, name, latitude, longitude, date, precipitation, wind_mph, temperature, visibility);
+                weatherDataList.add(weatherData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return weatherDataList;
 
-	}
+    }
 
-	@Override
-	public void rateLocation(Location location, Float rating, User user) {
+    @Override
+    public void rateLocation(Location location, Float rating, User user) {
 
-	}
+    }
 }
