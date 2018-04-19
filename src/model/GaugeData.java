@@ -2,6 +2,7 @@ package model;
 
 import javafx.beans.property.*;
 
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -99,7 +100,7 @@ public class GaugeData {
         this.date.set(date);
     }
 
-    public GaugeData(int gID, String name, float latitude, float longitude, float flowRate, float flowLevel, String date) {
+    public GaugeData(int gID, String name, float latitude, float longitude, float flowRate, float flowLevel, Date date) {
         this.gID.set(gID);
         this.name.set(name);
         this.latitude.set(latitude);
