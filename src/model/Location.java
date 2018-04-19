@@ -21,7 +21,8 @@ public class Location {
 
     public Location(String name, float  latitude, float longitude, float radiusGauge, float radiusWeather, String madeBy)
     {
-        this(name, -1, latitude, longitude, -1, radiusGauge,radiusWeather , madeBy, false);
+        this(name, Location.generateLID(name, madeBy), latitude, longitude, -1, radiusGauge,radiusWeather ,
+                madeBy, false);
     }
 
     public Location(String name, int id, float latitude, float longitude, float rating, float radiusGauge, float radiusWeather, String madeBy, boolean validated) {
