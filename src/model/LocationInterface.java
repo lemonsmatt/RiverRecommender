@@ -15,7 +15,7 @@ public interface LocationInterface {
     // Latitude and longitude should be within the radius given. 0 radius means perfect match. -1 radius means ignore latitude and longitude requirements.
     // name should be contained in the name of the location ( like "%name%")
     // id should be exact. -1 means anything
-    public List<Location> getValidatedLocationsFull(float latitude, float longitude, float radius, String name, int id);
+    public List<Location> getValidatedLocationsFull(float latitude, float longitude, float radius, String name);
 
     // Return a list of locations that have not been validated. Uses the ID, name, lat, long
     public List<Location> getUnvalidatedLocations();

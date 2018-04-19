@@ -65,11 +65,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="filterButton" mnemonicParsing="false" text="Filter" GridPane.columnIndex="6" onAction="#handleFilterButtonAction" />
-                  <TextField fx:id="idField" GridPane.columnIndex="1" />
-                  <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="ID" />
-                  <Label text="Name" GridPane.rowIndex="1" />
+                  <Button fx:id="filterButton" mnemonicParsing="false" onAction="#handleFilterButtonAction" text="Filter" GridPane.columnIndex="6" />
+                  <TextField fx:id="nameField" GridPane.columnIndex="1" />
+                  <Label text="Name" />
                   <Label text="Latitude" GridPane.columnIndex="2" />
                   <Label text="Longitude" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Label text="Radius" GridPane.columnIndex="4" />
