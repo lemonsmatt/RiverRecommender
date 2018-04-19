@@ -14,6 +14,7 @@ public class LocationSQL implements LocationInterface {
 
     public LocationSQL() {
         this.db = Main.getDatabase();
+        /*
         String query = "SELECT Name, LID, Lat, Long, Avgrating, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy, " +
                 "ValidatedBy FROM dbo.Location;";
         if (locList.isEmpty()) {
@@ -40,6 +41,7 @@ public class LocationSQL implements LocationInterface {
                 e.printStackTrace();
             }
         }
+        */
     }
 
     @Override
@@ -210,7 +212,7 @@ public class LocationSQL implements LocationInterface {
                 " CreatedBy, " + "ValidatedBy " +
                 "From dbo.Location WHERE ValidatedBy IS NOT NULL and Lat BETWEEN " + (latitude - (0.5 *
                 radius)) + " AND " + (latitude + (0.5 * radius)) + " and Long BETWEEN " + (longitude - (0.5
-                * radius)) + " AND " + (longitude + (0.5) * radius) + "(" + name + " REGEXP '^ALA[0-9]');";
+                * radius)) + " AND " + (longitude + (0.5) * radius) + " and (Name LIKE '%" + name + "%');";
         List<Location> list = new ArrayList<>();
         try {
             ResultSet rs = db.queryServer(query);
