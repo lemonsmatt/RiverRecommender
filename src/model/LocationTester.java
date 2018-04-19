@@ -57,7 +57,7 @@ public class LocationTester implements LocationInterface {
     }
 
     @Override
-    public boolean validateLocation(Location loc) {
+    public boolean validateLocation(Location loc, User user) {
         return false;
     }
 
@@ -72,12 +72,12 @@ public class LocationTester implements LocationInterface {
     }
 
     @Override
-    public List<Location> getValidatedLocationsFull(float latitude, float longitude, float radius, String name, int id) {
-        return null;
+    public void rateLocation(Location location, Float rating, User user) {
+
     }
 
     @Override
-    public void rateLocation(Location location, Float rating, User user) {
-
+    public List<Location> getValidatedLocationsFull(float latitude, float longitude, float radius, String name) {
+        return null;
     }
 }

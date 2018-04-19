@@ -63,6 +63,9 @@ public class ValidateLocationController extends Controller {
             }
         }
         table.getItems().remove(validate);
+        for (Location loc : validate) {
+            locationInterface.validateLocation(loc, mainApp.getUser());
+        }
 
         mainApp.showScene("main");
     }

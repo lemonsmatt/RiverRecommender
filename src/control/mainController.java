@@ -24,8 +24,7 @@ public class mainController extends Controller {
     @FXML private Button deleteButton;
     @FXML private Button validateButton;
     @FXML private Button banButton;
-
-    @FXML public TextField idField;
+    
     @FXML public TextField nameField;
     @FXML public TextField latitudeField;
     @FXML public TextField longitudeField;
@@ -107,7 +106,6 @@ public class mainController extends Controller {
 
     @FXML protected void handleFilterButtonAction(ActionEvent event) throws  IOException {
         String name = nameField.getText();
-        int id = 0;
         float latitude = 0;
         float longitude = 0;
         float radius = 0;
@@ -136,19 +134,11 @@ public class mainController extends Controller {
             radiusField.setPromptText("Must be a numerical value");
             end= true;
         }
-        try {
-            id = Integer.parseInt(idField.getText());
-        } catch (NumberFormatException e)
-        {
-            idField.clear();
-            idField.setPromptText("Must be a numerical value");
-            end= true;
-        }
         if(end) {
             return;
         }
         LocationInterface locationInterface = mainApp.getLocationInterface();
-        final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocationsFull(latitude, longitude, radius, name, id));
+        final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocationsFull(latitude, longitude, radius, name));
 
         table.setItems(items);
     }
