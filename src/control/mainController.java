@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import model.Location;
@@ -27,6 +24,13 @@ public class mainController extends Controller {
     @FXML private Button deleteButton;
     @FXML private Button validateButton;
     @FXML private Button banButton;
+
+    @FXML public TextField idField;
+    @FXML public TextField nameField;
+    @FXML public TextField latitudeField;
+    @FXML public TextField longitudeField;
+    @FXML public TextField radiusField;
+    @FXML public Button filterButton;
 
     @FXML public TableColumn<Location, Integer> idCol;
     @FXML public TableColumn<Location, String> nameCol;
@@ -99,5 +103,53 @@ public class mainController extends Controller {
     @FXML protected  void handleLogoutButtonAction(ActionEvent event) throws IOException {
         mainApp.setUser(new User());
         mainApp.showScene("main");
+    }
+
+    @FXML protected void handleFilterButtonAction(ActionEvent event) throws  IOException {
+        String name = nameField.getText();
+        int id = 0;
+        float latitude = 0;
+        float longitude = 0;
+        float radius = 0;
+        boolean end = false;
+        try {
+            latitude = Float.parseFloat(latitudeField.getText());
+        } catch (NumberFormatException e)
+        {
+            latitudeField.clear();
+            latitudeField.setPromptText("Must be a numerical value");
+            end= true;
+        }
+        try {
+            longitude = Float.parseFloat(longitudeField.getText());
+        } catch (NumberFormatException e)
+        {
+            longitudeField.clear();
+            longitudeField.setPromptText("Must be a numerical value");
+            end= true;
+        }
+        try {
+            radius = Float.parseFloat(radiusField.getText());
+        } catch (NumberFormatException e)
+        {
+            radiusField.clear();
+            radiusField.setPromptText("Must be a numerical value");
+            end= true;
+        }
+        try {
+            id = Integer.parseInt(idField.getText());
+        } catch (NumberFormatException e)
+        {
+            idField.clear();
+            idField.setPromptText("Must be a numerical value");
+            end= true;
+        }
+        if(end) {
+            return;
+        }
+        LocationInterface locationInterface = new LocationTester();
+        final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocationsFull(latitude, longitude, radius, name, id));
+
+        table.setItems(items);
     }
 }
