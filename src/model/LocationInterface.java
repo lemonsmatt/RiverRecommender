@@ -21,7 +21,7 @@ public interface LocationInterface {
     public List<Location> getUnvalidatedLocations();
 
     // Validates the loc
-    boolean validateLocation(Location loc);
+    boolean validateLocation(Location loc, User user);
 
     //Adds a location
     public boolean addLocation(Location loc);
