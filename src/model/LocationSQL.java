@@ -14,7 +14,7 @@ public class LocationSQL implements LocationInterface {
 
     public LocationSQL() {
         this.db = Main.getDatabase();
-        /*
+
         String query = "SELECT Name, LID, Lat, Long, Avgrating, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy, " +
                 "ValidatedBy FROM dbo.Location;";
         if (locList.isEmpty()) {
@@ -41,7 +41,7 @@ public class LocationSQL implements LocationInterface {
                 e.printStackTrace();
             }
         }
-        */
+
     }
 
     @Override
@@ -226,7 +226,7 @@ public class LocationSQL implements LocationInterface {
                 Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
                 Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
                 String validatedBy = rs.getString("ValidatedBy");
-                Location location = new Location(name, LID, latitude, longitude, avgRating,
+                Location location = new Location(tempName, LID, varLat, varLong, avgRating,
                         riverRelevantRadius,
                         weatherRelevantRadius, email, validatedBy != null);
                 list.add(location);
