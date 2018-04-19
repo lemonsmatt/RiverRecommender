@@ -95,13 +95,25 @@ public class UserSQL implements UserInterface {
 
 	@Override
 	public List<User> getBannableUsers() {
-		List<User> out = new ArrayList<User>();
-		for (User user: userList) {
-			if (!user.getBan() && !user.isAdmin()) {
-				out.add(user);
+		String query = "SELECT Email, UserName, password, IsAdmin, BannedBy FROM dbo.[User] WHERE BannedBy " +
+				"IS NULL";
+		ResultSet rs = db.queryServer(query);
+		List<User> list = new ArrayList<>();
+		try {
+			while (rs != null && rs.next()) {
+				String email = rs.getString("Email");
+				String userName = rs.getString("UserName");
+				String password = rs.getString("password");
+				Boolean isAdmin = rs.getBoolean("IsAdmin");
+				String bannedBy = rs.getString("BannedBy");
+				User usr = new User(email, userName, password, isAdmin, false ,bannedBy);
+				list.add(usr);
+				//rs.getString("BannedBy");
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return  out;
+		return list;
 	}
 
 	@Override
