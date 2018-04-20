@@ -326,19 +326,20 @@ public class LocationSQL implements LocationInterface {
     @Override
     public void rateLocation(Location location, Float rating, User user) {
 
-        String query = "SELECT LID FROM dbo.[Rating] WHERE Email = " + user.getEmail() + ";";
+        String query = "SELECT LID FROM dbo.[Rating] WHERE Email = '" + user.getEmail() + "';";
         ResultSet rs = db.queryServer(query);
-        try {
-            if (rs == null || rs.next()) {
-                query = "INSERT INTO dbo.[Rating] (Email, LID, Rating) VALUES ('" + user.getEmail() + "', " + location.getID() + ", " + rating + ");";
-            } else {
-                query = "UPDATE dbo.[Rating] SET Rating WHERE Email = " + user.getEmail() + " and LID = " +
-                        location.getID() + ";";
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+        if (rs == null) {
+            query = "INSERT INTO dbo.[Rating] (Email, LID, Rating) VALUES ('" + user.getEmail() + "', " + location.getID() + ", " + rating + ");";
+        } else {
+            query = "UPDATE dbo.[Rating] SET Rating = " + rating + " WHERE Email = '" + user.getEmail() +
+                    "' " +
+                    "and LID =" +
+                    " " +
+                    location.getID() + ";";
         }
-        db.queryUpdate(query);
+
+        db.queryServerMulti(query);
         String find = "SELECT AVG(Rating) FROM dbo.[Rating] WHERE LID = " + location.getID() + ";";
         rs = db.queryServer(find);
         try {
