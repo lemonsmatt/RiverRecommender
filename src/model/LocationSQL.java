@@ -101,7 +101,7 @@ public class LocationSQL implements LocationInterface {
                 String email = rs.getString("CreatedBy");
                 Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
                 Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
-                Location location = new Location( name, LID, latitude, longitude, riverRelevantRadius,
+                Location location = new Location(name, LID, latitude, longitude, riverRelevantRadius,
                         weatherRelevantRadius, email, false);
                 //temp
                 //weatherRelevantRadius, email);
@@ -113,23 +113,36 @@ public class LocationSQL implements LocationInterface {
         return list;
     }
 
+
     @Override
     public boolean addLocation(Location loc) {
+
+        //if time allows, change like (https://stackoverflow
+        // .com/questions/1812891/java-escape-string-to-prevent-sql-injection)
         String query = "INSERT INTO dbo.Location (LID, Name, Lat, Long, AvgRating, RiverRelevantRadius, " +
                 "WeatherRelevantRadius, CreatedBy) VALUES (" + loc.getID() + ", '" + loc.getName() + "', "
                 + loc.getLatitude() + ", " + loc.getLongitude() + ", " + (int) loc.getRating() + ", " +
                 (int) loc.getRadiusGauge() + ", " + (int) loc.getRadiusWeather() + ", '" + loc.getMadeBy() + "' );";
         db.queryServerMulti(query);
         ResultSet rs;
-        query = "SELECT LID FROM dbo.Location WHERE LID = " + loc.getID();
+        query = "SELECT LID, RiverRelevantRadius, WeatherRelevantRadius FROM dbo.Location WHERE LID = " + loc.getID();
         rs = db.queryServer(query);
+        boolean proceedToNext = false;
+        float riverRadius = loc.getRadiusGauge();
+        float weatherRadius = loc.getRadiusWeather();
         try {
             while (rs.next()) {
                 Integer id = rs.getInt("LID");
-                return id == loc.getID();
+                //riverRadius = rs.getInt("RiverRelevantRadius");
+                //weatherRadius = rs.getInt("WeatherRelevantRadius");
+                proceedToNext = id == loc.getID() ? true : false;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        if (!proceedToNext) {
+            return false;
         }
 
         query = "SELECT * FROM dbo.RiverGauge;";
@@ -138,10 +151,9 @@ public class LocationSQL implements LocationInterface {
             while (rs.next()) {
                 float temp_lat = rs.getFloat("Lat");
                 float temp_long = rs.getFloat("Long");
-                int radius = rs.getInt("RiverRelevantRadius");
                 int gID = rs.getInt("GID");
                 double distance = Math.hypot(loc.getLatitude() - temp_lat, loc.getLongitude() - temp_long);
-                if (distance <= radius) {
+                if (distance <= riverRadius) {
                     query = "INSERT INTO dbo.RelevantGauge (LID, GID) VALUES (" + loc.getID() + ", " + gID
                             + ");";
                     db.queryServerMulti(query);
@@ -157,10 +169,9 @@ public class LocationSQL implements LocationInterface {
             while (rs.next()) {
                 float temp_lat = rs.getFloat("Lat");
                 float temp_long = rs.getFloat("Long");
-                int radius = rs.getInt("WeatherRelevantRadius");
                 int wID = rs.getInt("WID");
                 double distance = Math.hypot(loc.getLatitude() - temp_lat, loc.getLongitude() - temp_long);
-                if (distance <= radius) {
+                if (distance <= weatherRadius) {
                     query = "INSERT INTO dbo.RelevantStations (LID, WID) VALUES (" + loc.getID() + ", " + wID
                             + ");";
                     db.queryServerMulti(query);
@@ -170,11 +181,15 @@ public class LocationSQL implements LocationInterface {
             e.printStackTrace();
         }
 
-        return false;
+        return true;
     }
 
     @Override
     public boolean removeLocation(Location loc) {
+        String removeGauge = "DELETE FROM dbo.RelevantGauge WHERE LID = " + loc.getID() + ";";
+        db.queryServerMulti(removeGauge);
+        String removeWeather = "DELETE FROM dbo.RelevantStations WHERE LID = " + loc.getID() + ";";
+        db.queryServerMulti(removeWeather);
         String query = "DELETE FROM dbo.Location WHERE LID = " + loc.getID() + ";";
         db.queryUpdate(query);
         query = "SELECT LID FROM dbo.Location WHERE LID = " + loc.getID() + ";";
@@ -184,11 +199,12 @@ public class LocationSQL implements LocationInterface {
             while (rs.next()) {
                 empty = false;
             }
-            return empty;
+            return !empty;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+
+        return true;
     }
 
     @Override
@@ -309,7 +325,7 @@ public class LocationSQL implements LocationInterface {
 
     @Override
     public void rateLocation(Location location, Float rating, User user) {
-        String query = "INSERT INTO dbo.[Rating] (Email, LID, Rating) VALUES ('"+ user.getEmail() + "', " + location.getID() + ", "
+        String query = "INSERT INTO dbo.[Rating] (Email, LID, Rating) VALUES ('" + user.getEmail() + "', " + location.getID() + ", "
                 + rating + ");";
         db.queryUpdate(query);
     }
