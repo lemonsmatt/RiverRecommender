@@ -15,8 +15,7 @@ public class LocationSQL implements LocationInterface {
     public LocationSQL() {
         this.db = Main.getDatabase();
 
-        String query = "SELECT Name, LID, Lat, Long, Avgrating, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy, " +
-                "ValidatedBy FROM dbo.Location;";
+        String query = "SELECT Name, LID, Lat, Long, Avgrating, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy, " + "ValidatedBy FROM dbo.Location;";
         if (locList.isEmpty()) {
 
             String name, madeBy;
@@ -45,17 +44,22 @@ public class LocationSQL implements LocationInterface {
     }
 
     @Override
-    public boolean validateLocation(Location loc) {
-        String query = "UPDATE ValidatedBy ='" + loc.getMadeBy() + "' FROM dbo.Location WHERE LID = " + loc.getID() + ";";
+    public boolean validateLocation(Location loc, User usr) {
+        String query = "UPDATE dbo.Location SET ValidatedBy = '" + usr.getEmail() + "' FROM dbo.Location " +
+                "WHERE " +
+                "LID = " + loc.getID() + ";";
         db.queryServerMulti(query);
-        query = "SELECT ValidatedBy FROM dbo.Location WHERE LID = " + loc.getID() + ";";
-        ResultSet rs = db.queryServer(query);
-        try {
-            return (rs.getString("ValidatedBy").equals(loc.getMadeBy()));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+//        query = "SELECT ValidatedBy FROM dbo.Location WHERE LID = " + loc.getID() + ";";
+//        ResultSet rs = db.queryServer(query);
+        return true;
+//
+//        try {
+//            String test = rs.getString("ValidatedBy");
+//            return (test.contains(usr.getEmail()));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
     }
 
     @Override
@@ -84,18 +88,21 @@ public class LocationSQL implements LocationInterface {
 
     @Override
     public List<Location> getUnvalidatedLocations() {
-        String query = "SELECT Name, Lat, Long, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy From dbo.Location WHERE ValidatedBy IS NULL";
+        String query = "SELECT LID, Name, Lat, Long, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy " +
+                "From dbo.Location WHERE ValidatedBy IS NULL";
         List<Location> list = new ArrayList<>();
         try {
             ResultSet rs = db.queryServer(query);
             while (rs.next()) {
+                int LID = rs.getInt("LID");
                 String name = rs.getString("Name");
                 Float latitude = rs.getFloat("Lat");
                 Float longitude = rs.getFloat("Long");
                 String email = rs.getString("CreatedBy");
                 Float riverRelevantRadius = rs.getFloat("RiverRelevantRadius");
                 Float weatherRelevantRadius = rs.getFloat("WeatherRelevantRadius");
-                Location location = new Location(name, latitude, longitude, riverRelevantRadius, weatherRelevantRadius, email);
+                Location location = new Location( name, LID, latitude, longitude, riverRelevantRadius,
+                        weatherRelevantRadius, email, false);
                 //temp
                 //weatherRelevantRadius, email);
                 list.add(location);
@@ -108,8 +115,11 @@ public class LocationSQL implements LocationInterface {
 
     @Override
     public boolean addLocation(Location loc) {
-        String query = "INSERT INTO dbo.Location (LID, Name, Lat, Long, AvgRating, RiverRelevantRadius, WeatherRelevantRadius, CreatedBy) VALUES (" + loc.getID() + ", '" + loc.getName() + "', " + loc.getLatitude() + ", " + loc.getLongitude() + ", " + loc.getRating() + "', " + loc.getRadiusGauge() + ", " + loc.getRadiusGauge() + ", '" + loc.getMadeBy() + "' );";
-        db.queryServer(query);
+        String query = "INSERT INTO dbo.Location (LID, Name, Lat, Long, AvgRating, RiverRelevantRadius, " +
+                "WeatherRelevantRadius, CreatedBy) VALUES (" + loc.getID() + ", '" + loc.getName() + "', "
+                + loc.getLatitude() + ", " + loc.getLongitude() + ", " + (int) loc.getRating() + "', " +
+                (int) loc.getRadiusGauge() + ", " + (int) loc.getRadiusWeather() + ", '" + loc.getMadeBy() + "' );";
+        db.queryServerMulti(query);
         ResultSet rs;
         query = "SELECT LID FROM dbo.Location WHERE LID = " + loc.getID();
         rs = db.queryServer(query);
@@ -128,7 +138,7 @@ public class LocationSQL implements LocationInterface {
             while (rs.next()) {
                 float temp_lat = rs.getFloat("Lat");
                 float temp_long = rs.getFloat("Long");
-                float radius = rs.getFloat("RiverRelevantRadius");
+                int radius = rs.getInt("RiverRelevantRadius");
                 int gID = rs.getInt("GID");
                 double distance = Math.hypot(loc.getLatitude() - temp_lat, loc.getLongitude() - temp_long);
                 if (distance <= radius) {
@@ -147,7 +157,7 @@ public class LocationSQL implements LocationInterface {
             while (rs.next()) {
                 float temp_lat = rs.getFloat("Lat");
                 float temp_long = rs.getFloat("Long");
-                float radius = rs.getFloat("WeatherRelevantRadius");
+                int radius = rs.getInt("WeatherRelevantRadius");
                 int wID = rs.getInt("WID");
                 double distance = Math.hypot(loc.getLatitude() - temp_lat, loc.getLongitude() - temp_long);
                 if (distance <= radius) {
@@ -253,7 +263,7 @@ public class LocationSQL implements LocationInterface {
                 float longitude = rs.getFloat("Long");
                 float flowRate = rs.getFloat("FlowRate");
                 float flowLevel = rs.getFloat("FlowLevel");
-                String date = rs.getString("Date");
+                Date date = rs.getDate("Date");
                 GaugeData gauge = new GaugeData(gid, name, latitude, longitude, flowRate, flowLevel, date);
                 gaugeDataList.add(gauge);
             }
@@ -281,6 +291,7 @@ public class LocationSQL implements LocationInterface {
                 Date date = rs.getDate("Date");
                 float temperature = rs.getFloat("Temperature");
                 float visibility = rs.getFloat("Visibility");
+
                 WeatherData weatherData = new WeatherData(wID, name, latitude, longitude, date, precipitation, wind_mph, temperature, visibility);
                 weatherDataList.add(weatherData);
             }
