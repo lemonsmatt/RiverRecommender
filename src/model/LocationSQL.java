@@ -117,7 +117,7 @@ public class LocationSQL implements LocationInterface {
     public boolean addLocation(Location loc) {
         String query = "INSERT INTO dbo.Location (LID, Name, Lat, Long, AvgRating, RiverRelevantRadius, " +
                 "WeatherRelevantRadius, CreatedBy) VALUES (" + loc.getID() + ", '" + loc.getName() + "', "
-                + loc.getLatitude() + ", " + loc.getLongitude() + ", " + (int) loc.getRating() + "', " +
+                + loc.getLatitude() + ", " + loc.getLongitude() + ", " + (int) loc.getRating() + ", " +
                 (int) loc.getRadiusGauge() + ", " + (int) loc.getRadiusWeather() + ", '" + loc.getMadeBy() + "' );";
         db.queryServerMulti(query);
         ResultSet rs;
@@ -175,12 +175,16 @@ public class LocationSQL implements LocationInterface {
 
     @Override
     public boolean removeLocation(Location loc) {
-        String query = "DELETE * FROM dbo.Location WHERE id = " + loc.getID() + ";";
-        db.queryServer(query);
-        query = "SELECT LID FROM dbo.Location WHERE id = " + loc.getID() + ";";
+        String query = "DELETE FROM dbo.Location WHERE LID = " + loc.getID() + ";";
+        db.queryUpdate(query);
+        query = "SELECT LID FROM dbo.Location WHERE LID = " + loc.getID() + ";";
         ResultSet rs = db.queryServer(query);
         try {
-            return rs.getInt("LID") == 0;
+            boolean empty = true;
+            while (rs.next()) {
+                empty = false;
+            }
+            return empty;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -305,6 +309,8 @@ public class LocationSQL implements LocationInterface {
 
     @Override
     public void rateLocation(Location location, Float rating, User user) {
-
+        String query = "INSERT INTO dbo.[Rating] (Email, LID, Rating) VALUES ('"+ user.getEmail() + "', " + location.getID() + ", "
+                + rating + ");";
+        db.queryUpdate(query);
     }
 }

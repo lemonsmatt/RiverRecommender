@@ -56,4 +56,14 @@ public class Database {
         }
         return;
     }
+
+    public int queryUpdate(String query) {
+        try {
+            Statement statement = connection.createStatement();
+            return statement.executeUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

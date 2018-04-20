@@ -30,8 +30,8 @@ public class Main extends Application {
         database = new Database();
         user = new User("New User", "", "", false, true, "");
         mainStage = primaryStage;
-        locationInterface = new LocationTester();
-        userInterface = new UserTester();
+        locationInterface = new LocationSQL();
+        userInterface = new UserSQL();
         initRootLayout(mainStage);
         showScene("main");
 
