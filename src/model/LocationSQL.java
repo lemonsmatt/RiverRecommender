@@ -286,7 +286,7 @@ public class LocationSQL implements LocationInterface {
     @Override
     public List<GaugeData> getGauges(Location loc) {
         //Incomplete
-        String query = "SELECT * FROM dbo.Location INNER JOIN dbo.RelevantGauge ON dbo.Location.LID = dbo.RelevantGauge.LID INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID;";
+        String query = "SELECT RelevantGauge.GID, RiverGauge.Name, RiverGauge.Lat, RiverGauge.Long, RiverData.FlowLevel, RiverData.FlowRate, RiverData.Date FROM dbo.Location INNER JOIN dbo.RelevantGauge ON dbo.Location.LID = dbo.RelevantGauge.LID INNER JOIN dbo.RiverGauge ON dbo.RelevantGauge.GID = dbo.RiverGauge.GID INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID;";
         List<GaugeData> gaugeDataList = new ArrayList<>();
         ResultSet rs = db.queryServer(query);
         //String riverQuery = "SELECT * FROM dbo.RiverData WHERE GID = " +  + ;"
@@ -313,7 +313,7 @@ public class LocationSQL implements LocationInterface {
     @Override
     public List<WeatherData> getWeatherStations(Location loc) {
         List<WeatherData> weatherDataList = new ArrayList<>();
-        String query = "SELECT * FROM dbo.Location INNER JOIN dbo.RelevantStations ON dbo.Location.LID = dbo.RelevantStations.LID INNER JOIN dbo.WeatherStation ON dbo.RelevantStations.WID = dbo.WeatherStation.WID INNER JOIN dbo.WeatherData ON dbo.WeatherStation.WID = dbo.WeatherData.WID;";
+        String query = "SELECT dbo.WeatherData.WID, dbo.WeatherStation.Name, dbo.WeatherData.Long, dbo.WeatherData.Lat, dbo.WeatherData.Date, dbo.WeatherData.Temperature, dbo.WeatherData.Visibility, dbo.WeatherData.wind_mph, dbo.WeatherData.Precipitation FROM dbo.Location INNER JOIN dbo.RelevantStations ON dbo.Location.LID = dbo.RelevantStations.LID INNER JOIN dbo.WeatherStation ON dbo.RelevantStations.WID = dbo.WeatherStation.WID INNER JOIN dbo.WeatherData ON dbo.WeatherStation.WID = dbo.WeatherData.WID;";
 
         try {
             ResultSet rs = db.queryServer(query);
