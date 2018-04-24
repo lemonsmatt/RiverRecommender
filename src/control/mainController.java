@@ -14,6 +14,7 @@ import model.LocationTester;
 import model.User;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class mainController extends Controller {
 
@@ -61,7 +62,7 @@ public class mainController extends Controller {
 
         LocationInterface locationInterface = mainApp.getLocationInterface();
         final ObservableList<Location> items = FXCollections.observableArrayList(locationInterface.getValidatedLocationsFull());
-
+        
         table.setItems(items);
 
         table.setOnMouseClicked( event -> {
