@@ -264,6 +264,22 @@ public class LocationSQL implements LocationInterface {
         } catch (SQLException e) {
             return null;
         }
+        for (Location loc: list) {
+            query = "SELECT AVG(RRating) FROM dbo.RelevantGauge INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID WHERE dbo.LID = " + loc.getID() + ";";
+            try {
+                ResultSet rs = db.queryServer(query);
+                float quality = 0;
+                int total = 0;
+                
+                while (rs != null && rs.next()) {
+                    quality += rs.getInt("RRating");
+                    total++;
+                }
+                loc.setQuality(quality/total);
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
         return list;
     }
 
