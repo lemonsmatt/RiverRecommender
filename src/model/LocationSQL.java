@@ -233,6 +233,40 @@ public class LocationSQL implements LocationInterface {
         } catch (SQLException e) {
             return null;
         }
+        for (Location loc: list) {
+            String query1 = "SELECT AVG(RiverData.RRating) FROM dbo.RelevantGauge INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID " +
+                    "WHERE dbo.RelevantGauge.LID = " + loc.getID() + ";";
+            String query2 = "SELECT AVG(WeatherData.WRating) FROM dbo.RelevantStations INNER JOIN dbo.WeatherData ON dbo.RelevantStations.WID = dbo.WeatherData.WID " +
+                    "WHERE dbo.RelevantStations.LID = " + loc.getID() + ";";
+            try {
+                ResultSet rs1 = db.queryServer(query1);
+                ResultSet rs2 = db.queryServer(query2);
+                float qualityR = 0;
+                float qualityW = 0;
+                int totalR = 0;
+                int totalW = 0;
+                while (rs1 != null && rs1.next()) {
+                    qualityR += rs1.getFloat(1);
+                    totalR++;
+                }
+                while (rs2 != null && rs2.next()) {
+                    qualityW += rs2.getFloat(1);
+                    totalW++;
+                }
+                qualityR = qualityR/totalR;
+                qualityW = qualityW/totalW;
+                float quality = 0;
+                if (qualityR > 0 && qualityW > 0)
+                {
+                    quality = (qualityR + qualityW)/2;
+                } else {
+                    quality = (qualityR > 0) ? qualityR : qualityW;
+                }
+                loc.setQuality(quality);
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
         return list;
     }
 
@@ -265,17 +299,35 @@ public class LocationSQL implements LocationInterface {
             return null;
         }
         for (Location loc: list) {
-            query = "SELECT AVG(RRating) FROM dbo.RelevantGauge INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID WHERE dbo.LID = " + loc.getID() + ";";
+            String query1 = "SELECT AVG(RiverData.RRating) FROM dbo.RelevantGauge INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID " +
+                    "WHERE dbo.RelevantGauge.LID = " + loc.getID() + ";";
+            String query2 = "SELECT AVG(WeatherData.WRating) FROM dbo.RelevantStations INNER JOIN dbo.WeatherData ON dbo.RelevantStations.WID = dbo.WeatherData.WID " +
+                    "WHERE dbo.RelevantStations.LID = " + loc.getID() + ";";
             try {
-                ResultSet rs = db.queryServer(query);
-                float quality = 0;
-                int total = 0;
-                
-                while (rs != null && rs.next()) {
-                    quality += rs.getInt("RRating");
-                    total++;
+                ResultSet rs1 = db.queryServer(query1);
+                ResultSet rs2 = db.queryServer(query2);
+                float qualityR = 0;
+                float qualityW = 0;
+                int totalR = 0;
+                int totalW = 0;
+                while (rs1 != null && rs1.next()) {
+                    qualityR += rs1.getFloat(1);
+                    totalR++;
                 }
-                loc.setQuality(quality/total);
+                while (rs2 != null && rs2.next()) {
+                    qualityW += rs2.getFloat(1);
+                    totalW++;
+                }
+                qualityR = qualityR/totalR;
+                qualityW = qualityW/totalW;
+                float quality = 0;
+                if (qualityR > 0 && qualityW > 0)
+                {
+                    quality = (qualityR + qualityW)/2;
+                } else {
+                    quality = (qualityR > 0) ? qualityR : qualityW;
+                }
+                loc.setQuality(quality);
             } catch (SQLException e) {
                 System.out.println(e);
             }
@@ -286,7 +338,8 @@ public class LocationSQL implements LocationInterface {
     @Override
     public List<GaugeData> getGauges(Location loc) {
         //Incomplete
-        String query = "SELECT RelevantGauge.GID, RiverGauge.Name, RiverGauge.Lat, RiverGauge.Long, RiverData.FlowLevel, RiverData.FlowRate, RiverData.Date FROM dbo.Location INNER JOIN dbo.RelevantGauge ON dbo.Location.LID = dbo.RelevantGauge.LID INNER JOIN dbo.RiverGauge ON dbo.RelevantGauge.GID = dbo.RiverGauge.GID INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID;";
+        String query = "SELECT RelevantGauge.GID, RiverGauge.Name, RiverGauge.Lat, RiverGauge.Long, RiverData.FlowLevel, RiverData.FlowRate, RiverData.Date FROM dbo.Location INNER JOIN dbo.RelevantGauge ON dbo.Location.LID = dbo.RelevantGauge.LID INNER JOIN dbo.RiverGauge ON dbo.RelevantGauge.GID = dbo.RiverGauge.GID INNER JOIN dbo.RiverData ON dbo.RelevantGauge.GID = dbo.RiverData.GID " +
+                "WHERE dbo.Location.LID = " + loc.getID() + ";";
         List<GaugeData> gaugeDataList = new ArrayList<>();
         ResultSet rs = db.queryServer(query);
         //String riverQuery = "SELECT * FROM dbo.RiverData WHERE GID = " +  + ;"
@@ -313,7 +366,8 @@ public class LocationSQL implements LocationInterface {
     @Override
     public List<WeatherData> getWeatherStations(Location loc) {
         List<WeatherData> weatherDataList = new ArrayList<>();
-        String query = "SELECT dbo.WeatherData.WID, dbo.WeatherStation.Name, dbo.WeatherData.Long, dbo.WeatherData.Lat, dbo.WeatherData.Date, dbo.WeatherData.Temperature, dbo.WeatherData.Visibility, dbo.WeatherData.wind_mph, dbo.WeatherData.Precipitation FROM dbo.Location INNER JOIN dbo.RelevantStations ON dbo.Location.LID = dbo.RelevantStations.LID INNER JOIN dbo.WeatherStation ON dbo.RelevantStations.WID = dbo.WeatherStation.WID INNER JOIN dbo.WeatherData ON dbo.WeatherStation.WID = dbo.WeatherData.WID;";
+        String query = "SELECT dbo.WeatherData.WID, dbo.WeatherStation.Name, dbo.WeatherData.Long, dbo.WeatherData.Lat, dbo.WeatherData.Date, dbo.WeatherData.Temperature, dbo.WeatherData.Visibility, dbo.WeatherData.wind_mph, dbo.WeatherData.Precipitation FROM dbo.Location INNER JOIN dbo.RelevantStations ON dbo.Location.LID = dbo.RelevantStations.LID INNER JOIN dbo.WeatherStation ON dbo.RelevantStations.WID = dbo.WeatherStation.WID INNER JOIN dbo.WeatherData ON dbo.WeatherStation.WID = dbo.WeatherData.WID " +
+                "WHERE dbo.Location.LID = " + loc.getID() + ";";
 
         try {
             ResultSet rs = db.queryServer(query);
