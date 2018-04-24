@@ -17,16 +17,12 @@
    <center>
       <TableView id="table" fx:id="table" prefHeight="200.0" prefWidth="200.0" style="-fx-vgap: 12; -fx-hgap: 12;" BorderPane.alignment="CENTER">
         <columns>
-            <TableColumn fx:id="idCol" prefWidth="75.0" text="ID" />
-            <TableColumn fx:id="nameCol" prefWidth="232.0" text="Name" />
-            <TableColumn fx:id="latitudeCol" prefWidth="85.0" text="Latitude" />
-            <TableColumn fx:id="longitudeCol" prefWidth="89.0" text="Longitude" />
-            <TableColumn fx:id="ratingCol" prefWidth="89.0" text="Rating" />
-            <TableColumn fx:id="qualityCol" prefWidth="75.0" text="Quality" />
-            <TableColumn fx:id="weatherCol" prefWidth="75.0" text="Weather" />
-            <TableColumn fx:id="rainCol" prefWidth="75.0" text="Rain" />
-            <TableColumn fx:id="flowCol" prefWidth="84.0" text="Flow Delta" />
-            <TableColumn fx:id="heightCol" prefWidth="103.0" text="Height delta" />
+            <TableColumn fx:id="idCol" prefWidth="156.0" text="ID" />
+            <TableColumn fx:id="nameCol" prefWidth="321.0" text="Name" />
+            <TableColumn fx:id="latitudeCol" prefWidth="148.0" text="Latitude" />
+            <TableColumn fx:id="longitudeCol" prefWidth="125.0" text="Longitude" />
+            <TableColumn fx:id="ratingCol" prefWidth="111.0" text="Rating" />
+            <TableColumn fx:id="qualityCol" prefWidth="125.0" text="Quality" />
         </columns>
       </TableView>
    </center>
